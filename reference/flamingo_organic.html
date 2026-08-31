@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Flamingo BJJ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo:wght@400&family=Figtree:wght@400;600;700&display=swap"/>
+<style>
+/* ── ORGANIC DESIGN SYSTEM TOKENS ── */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --color-bg:#f5ead8;
+  --color-surface:#ebddc5;
+  --color-text:#201e1d;
+  --color-accent:#c67139;
+  --color-accent-2:#7a8a5e;
+  --color-divider:color-mix(in srgb,#201e1d 16%,transparent);
+  --color-neutral-100:#f9f4ed;--color-neutral-200:#eee7db;--color-neutral-300:#dcd3c4;
+  --color-neutral-400:#c0b6a5;--color-neutral-500:#a19786;--color-neutral-600:#82796a;
+  --color-neutral-700:#645c50;--color-neutral-800:#474238;--color-neutral-900:#2e2b25;
+  --color-accent-100:#fff2eb;--color-accent-200:#ffe1d0;--color-accent-300:#ffc6a5;
+  --color-accent-400:#f6a06b;--color-accent-500:#d67f48;--color-accent-600:#b2622d;
+  --color-accent-700:#8c491a;--color-accent-800:#643312;--color-accent-900:#402310;
+  --color-accent-2-100:#f0fae1;--color-accent-2-200:#e1eecc;--color-accent-2-300:#ccdbb2;
+  --color-accent-2-400:#aebf92;--color-accent-2-500:#8fa073;--color-accent-2-600:#728157;
+  --color-accent-2-700:#56633f;--color-accent-2-800:#3d472b;--color-accent-2-900:#272e1b;
+  --font-heading:"Caprasimo",system-ui,sans-serif;--font-heading-weight:400;
+  --font-body:"Figtree",system-ui,sans-serif;
+  --space-1:4.4px;--space-2:8.8px;--space-3:13.2px;--space-4:17.6px;--space-6:26.4px;--space-8:35.2px;
+  --radius-sm:8px;--radius-md:16px;--radius-lg:28px;
+  --shadow-sm:0 1px 2px color-mix(in srgb,#2e2b25 14%,transparent);
+  --shadow-md:0 3px 10px color-mix(in srgb,#2e2b25 16%,transparent);
+  --shadow-lg:0 12px 32px color-mix(in srgb,#2e2b25 22%,transparent);
+}
+body{margin:0;font-size:15px;line-height:1.55;font-weight:400;font-family:var(--font-body);background:var(--color-bg);color:var(--color-text)}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.12;letter-spacing:-0.015em;margin:0 0 var(--space-2)}
+h1{font-size:42px}h2{font-size:32px}h3{font-size:25px}h4{font-size:20px}h5{font-size:16px}
+h6{font-size:13px;letter-spacing:0.08em;text-transform:uppercase}
+p{margin:0 0 var(--space-3)}
+a{color:var(--color-accent);text-underline-offset:3px}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+::selection{background:color-mix(in srgb,var(--color-accent) 30%,transparent)}
+.text-muted{color:color-mix(in srgb,var(--color-text) 55%,transparent)}
+
+/* ── ORGANIC COMPONENTS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;text-decoration:none;font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:14px;line-height:1.2;color:var(--color-text);background:transparent;border:1px solid transparent;padding:var(--space-2) calc(var(--space-3)*1.2);border-radius:999px}
+.btn svg{display:block}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--color-accent);color:var(--color-bg)}
+.btn-primary:hover{background:var(--color-accent-600)}
+.btn-primary:active{background:var(--color-accent-700)}
+.btn-secondary{border-color:var(--color-divider)}
+.btn-secondary:hover{background:color-mix(in srgb,var(--color-text) 7%,transparent)}
+.btn-ghost{color:var(--color-accent);padding-inline:var(--space-1)}
+.btn-ghost:hover{background:color-mix(in srgb,var(--color-accent) 10%,transparent)}
+.btn-icon{width:36px;height:36px;padding:0}
+.btn-block{width:100%;margin-top:var(--space-2)}
+.btn-sm{font-size:12px;padding:5px 14px}
+.btn-xs{font-size:11px;padding:3px 10px}
+
+.field>label{display:block;font-size:12px;margin-bottom:5px;color:color-mix(in srgb,var(--color-text) 70%,transparent)}
+.input{width:100%;min-height:36px;padding:6px 14px;font:inherit;font-size:14px;color:var(--color-text);caret-color:var(--color-accent);background:var(--color-surface);border:1px solid var(--color-divider);border-radius:999px}
+.input:hover{border-color:color-mix(in srgb,var(--color-text) 45%,transparent)}
+.input:focus-visible{border-color:var(--color-accent);outline-offset:0}
+textarea.input{min-height:80px;resize:vertical;border-radius:var(--radius-lg);padding:10px 14px}
+select.input{cursor:pointer}
+
+.card{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);border-radius:calc(var(--radius-lg)*1.15);background:var(--color-surface)}
+.card-kicker{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent)}
+.card-title{font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:17px;line-height:1.2}
+.card-body{margin:0;font-size:13px;opacity:.8;flex:1}
+.card-meta{display:flex;align-items:center;gap:6px;font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent)}
+.elev-sm{box-shadow:var(--shadow-sm)}
+.elev-md{box-shadow:var(--shadow-md)}
+.elev-lg{box-shadow:var(--shadow-lg)}
+
+.tag{display:inline-flex;align-items:center;font-size:11px;letter-spacing:.02em;padding:3px 10px;border-radius:999px}
+.tag-accent{background:var(--color-accent-100);color:var(--color-accent-800)}
+.tag-accent-2{background:var(--color-accent-2-100);color:var(--color-accent-2-800)}
+.tag-neutral{background:var(--color-neutral-100);color:var(--color-neutral-800)}
+.tag-outline{border:1px solid var(--color-accent);color:var(--color-accent)}
+
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--color-text) 60%,transparent);padding:var(--space-2);border-bottom:1px solid var(--color-divider)}
+.table td{padding:var(--space-2);border-bottom:1px solid color-mix(in srgb,var(--color-text) 8%,transparent)}
+.table tbody tr:hover{background:color-mix(in srgb,var(--color-text) 4%,transparent)}
+
+.dialog-backdrop{position:fixed;inset:0;display:grid;place-items:center;padding:var(--space-4);background:color-mix(in srgb,var(--color-neutral-900) 50%,transparent);z-index:200}
+.dialog{width:min(460px,100%);display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);border-radius:calc(var(--radius-lg)*1.15);background:var(--color-bg);box-shadow:var(--shadow-lg)}
+.dialog-title{font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:20px}
+.dialog-body{font-size:14px;opacity:.85}
+.dialog-actions{display:flex;justify-content:flex-end;gap:var(--space-2);margin-top:var(--space-2)}
+
+.hr{height:1px;border:0;margin:var(--space-4) 0;background:var(--color-divider)}
+
+/* ── LAYOUT ── */
+.shell{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:232px;background:var(--color-surface);border-right:1px solid var(--color-divider);display:flex;flex-direction:column;flex-shrink:0;box-shadow:var(--shadow-sm)}
+.main{flex:1;overflow-y:auto;background:var(--color-bg)}
+
+/* ── SIDEBAR ── */
+.logo{padding:var(--space-4) var(--space-4) var(--space-3);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--color-divider)}
+.logo-mark{width:36px;height:36px;background:var(--color-accent);border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-name{font-family:var(--font-heading);font-size:16px;line-height:1.2}
+.logo-tag{font-size:10px;color:color-mix(in srgb,var(--color-text) 50%,transparent)}
+
+.role-badge{margin:var(--space-2) var(--space-3) var(--space-1);background:var(--color-neutral-100);border:1px solid var(--color-divider);border-radius:var(--radius-lg);padding:var(--space-2) var(--space-3);display:flex;align-items:center;gap:var(--space-2)}
+.role-avatar{width:28px;height:28px;border-radius:999px;background:var(--color-accent-200);border:1.5px solid var(--color-accent-400);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--color-accent-800);flex-shrink:0;font-family:var(--font-body)}
+.role-name{font-size:12px;font-weight:600;font-family:var(--font-body)}
+.role-type{font-size:10px;color:color-mix(in srgb,var(--color-text) 55%,transparent)}
+.role-switch{margin-left:auto;font-size:10px;color:var(--color-accent);cursor:pointer;font-family:var(--font-body);white-space:nowrap}
+.role-switch:hover{text-decoration:underline}
+
+nav{flex:1;padding:var(--space-2) var(--space-2) 0;overflow-y:auto}
+.nav-group{font-size:10px;color:color-mix(in srgb,var(--color-text) 45%,transparent);padding:var(--space-3) var(--space-2) var(--space-1);letter-spacing:.08em;text-transform:uppercase;font-family:var(--font-body)}
+.nav-item{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:999px;cursor:pointer;font-size:13px;color:color-mix(in srgb,var(--color-text) 65%,transparent);border:none;background:none;width:100%;text-align:left;transition:.12s;margin-bottom:2px;font-family:var(--font-body)}
+.nav-item:hover{background:color-mix(in srgb,var(--color-text) 7%,transparent);color:var(--color-text)}
+.nav-item.active{background:var(--color-accent-100);color:var(--color-accent-800);font-weight:600}
+.nav-item svg{flex-shrink:0;opacity:.7}
+.nav-item.active svg{opacity:1}
+.nav-badge{margin-left:auto;background:var(--color-accent);color:var(--color-bg);font-size:9px;font-weight:700;padding:1px 6px;border-radius:999px;font-family:var(--font-body)}
+
+.sidebar-footer{padding:var(--space-3) var(--space-4);border-top:1px solid var(--color-divider)}
+
+/* ── PAGE ── */
+.page{display:none;padding:var(--space-6) var(--space-8)}
+.page.active{display:block}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--space-6)}
+.page-title{font-family:var(--font-heading);font-size:28px;margin-bottom:4px}
+.page-sub{font-size:13px;color:color-mix(in srgb,var(--color-text) 55%,transparent);margin:0}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);margin-bottom:var(--space-6)}
+.stat{background:var(--color-surface);border-radius:calc(var(--radius-lg)*1.15);padding:var(--space-4);box-shadow:var(--shadow-sm)}
+.stat-val{font-family:var(--font-heading);font-size:28px;margin-bottom:2px}
+.stat-lbl{font-size:11px;color:color-mix(in srgb,var(--color-text) 55%,transparent);letter-spacing:.04em;text-transform:uppercase}
+.stat-delta{font-size:11px;margin-top:var(--space-1)}
+
+/* ── SESSION CARDS ── */
+.session-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+.session-card{background:var(--color-surface);border-radius:calc(var(--radius-lg)*1.15);overflow:hidden;box-shadow:var(--shadow-sm);transition:.15s}
+.session-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.session-accent{height:5px}
+.session-body{padding:var(--space-4)}
+.session-meta{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2);flex-wrap:wrap}
+.session-date{font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent);margin-left:auto}
+.session-title{font-family:var(--font-heading);font-size:16px;margin-bottom:var(--space-1)}
+.session-tech{font-size:12px;color:color-mix(in srgb,var(--color-text) 55%,transparent);margin-bottom:var(--space-3);line-height:1.5}
+.session-footer{display:flex;align-items:center;gap:var(--space-2);padding-top:var(--space-3);border-top:1px solid var(--color-divider);flex-wrap:wrap}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:2px;background:var(--color-neutral-200);border-radius:999px;padding:3px;margin-bottom:var(--space-4)}
+.tab-btn{flex:1;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:color-mix(in srgb,var(--color-text) 55%,transparent);transition:.12s;text-align:center;font-family:var(--font-body)}
+.tab-btn.active{background:var(--color-bg);color:var(--color-text);box-shadow:var(--shadow-sm)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── PROFICIENCY ── */
+.prof-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px}
+.prof-0{background:var(--color-neutral-100);color:var(--color-neutral-700)}
+.prof-1{background:var(--color-accent-100);color:var(--color-accent-800)}
+.prof-2{background:color-mix(in srgb,#f59e0b 12%,transparent);color:#854F0B;border:1px solid color-mix(in srgb,#f59e0b 30%,transparent)}
+.prof-3{background:var(--color-accent-2-100);color:var(--color-accent-2-800)}
+.prof-4{background:color-mix(in srgb,#3b82f6 10%,transparent);color:#185FA5;border:1px solid color-mix(in srgb,#3b82f6 25%,transparent)}
+
+.prof-btn{flex:1;padding:6px 4px;border-radius:999px;font-size:10px;font-weight:600;text-align:center;cursor:pointer;border:1px solid var(--color-divider);background:var(--color-neutral-100);color:color-mix(in srgb,var(--color-text) 55%,transparent);transition:.12s;font-family:var(--font-body)}
+.prof-btn:hover{border-color:color-mix(in srgb,var(--color-text) 35%,transparent);color:var(--color-text)}
+.prof-btn.sel-1{background:var(--color-accent-100);border-color:var(--color-accent-300);color:var(--color-accent-800)}
+.prof-btn.sel-2{background:color-mix(in srgb,#f59e0b 12%,transparent);border-color:color-mix(in srgb,#f59e0b 35%,transparent);color:#854F0B}
+.prof-btn.sel-3{background:var(--color-accent-2-100);border-color:var(--color-accent-2-300);color:var(--color-accent-2-800)}
+.prof-btn.sel-4{background:color-mix(in srgb,#3b82f6 10%,transparent);border-color:color-mix(in srgb,#3b82f6 28%,transparent);color:#185FA5}
+
+/* ── ATTENDANCE APPROVAL ── */
+.approval-card{background:var(--color-surface);border-radius:calc(var(--radius-lg)*1.15);margin-bottom:var(--space-4);overflow:hidden;box-shadow:var(--shadow-sm)}
+.approval-header{padding:var(--space-4);border-bottom:1px solid var(--color-divider);display:flex;align-items:center;gap:var(--space-3)}
+.approval-title{font-family:var(--font-heading);font-size:15px;flex:1}
+.approval-meta{font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent)}
+.att-member-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid color-mix(in srgb,var(--color-text) 6%,transparent);transition:.12s}
+.att-member-row:last-child{border-bottom:none}
+.att-member-row.absent{background:color-mix(in srgb,var(--color-accent) 5%,transparent)}
+.att-avatar{width:32px;height:32px;border-radius:999px;background:var(--color-accent-200);border:1.5px solid var(--color-accent-300);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--color-accent-800);flex-shrink:0;font-family:var(--font-body)}
+.att-name{font-size:13px;font-weight:600;font-family:var(--font-body)}
+.att-sub{font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent)}
+.att-toggle{display:flex;align-items:center;gap:var(--space-2)}
+.toggle-label{font-size:11px;font-weight:600;font-family:var(--font-body)}
+.tog{position:relative;width:38px;height:22px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0;position:absolute}
+.tog-track{position:absolute;inset:0;background:var(--color-neutral-300);border-radius:999px;cursor:pointer;transition:.2s}
+.tog input:checked+.tog-track{background:var(--color-accent-2)}
+.tog-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none;box-shadow:var(--shadow-sm)}
+.tog input:checked~.tog-thumb{transform:translateX(16px)}
+.approval-footer{padding:var(--space-3) var(--space-4);border-top:1px solid var(--color-divider);display:flex;align-items:center;justify-content:space-between;background:var(--color-neutral-100)}
+
+/* ── REGISTER ── */
+.register-wrap{overflow-x:auto;border-radius:calc(var(--radius-lg)*1.15);box-shadow:var(--shadow-sm);background:var(--color-surface)}
+.reg-table{border-collapse:collapse;min-width:100%;font-size:12px}
+.reg-table th{padding:var(--space-2) var(--space-3);background:var(--color-neutral-100);color:color-mix(in srgb,var(--color-text) 55%,transparent);font-weight:600;border-bottom:1px solid var(--color-divider);white-space:nowrap;text-align:left;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-family:var(--font-body)}
+.reg-table th.s-th{text-align:center;min-width:70px;border-left:1px solid var(--color-divider)}
+.reg-table td{padding:var(--space-2) var(--space-3);border-bottom:1px solid color-mix(in srgb,var(--color-text) 6%,transparent)}
+.reg-table td.dc{text-align:center;border-left:1px solid color-mix(in srgb,var(--color-text) 6%,transparent)}
+.reg-table tr:last-child td{border-bottom:none}
+.reg-table tbody tr:hover{background:color-mix(in srgb,var(--color-text) 3%,transparent)}
+.rdot{width:22px;height:22px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.dot-a{background:var(--color-accent-2-100);color:var(--color-accent-2-800)}
+.dot-x{background:var(--color-accent-100);color:var(--color-accent-800)}
+.dot-b{background:color-mix(in srgb,#f59e0b 12%,transparent);color:#854F0B}
+.dot-n{background:var(--color-neutral-100);color:var(--color-neutral-500)}
+.rmem{display:flex;align-items:center;gap:var(--space-2)}
+.rav{width:26px;height:26px;border-radius:999px;background:var(--color-accent-200);border:1.5px solid var(--color-accent-300);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--color-accent-800);flex-shrink:0;font-family:var(--font-body)}
+
+/* ── TIMELINE ── */
+.member-timeline{display:flex;flex-direction:column;gap:var(--space-3)}
+.tl-card{background:var(--color-surface);border-radius:calc(var(--radius-lg)*1.15);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tl-head{padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-2);border-bottom:1px solid var(--color-divider)}
+.tl-type{font-size:10px;font-weight:600;padding:3px 10px;border-radius:999px;margin-left:auto;font-family:var(--font-body)}
+.tl-body{padding:var(--space-3) var(--space-4)}
+.tl-title{font-family:var(--font-heading);font-size:16px;margin-bottom:var(--space-2)}
+.tl-chips{display:flex;flex-wrap:wrap;gap:var(--space-1);margin-bottom:var(--space-2)}
+.tl-chip{font-size:11px;padding:3px 10px;border-radius:999px;background:var(--color-neutral-100);border:1px solid var(--color-divider)}
+.prof-row{display:flex;gap:var(--space-1);margin-top:var(--space-3);padding-top:var(--space-3);border-top:1px solid var(--color-divider)}
+.no-att{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);background:var(--color-accent-100);border-radius:var(--radius-lg);margin-top:var(--space-2);font-size:12px;color:var(--color-accent-800)}
+
+/* ── TECH LIST ── */
+.tech-list{display:flex;flex-direction:column;gap:var(--space-1)}
+.tech-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-surface);border-radius:var(--radius-lg);cursor:pointer;transition:.12s;box-shadow:var(--shadow-sm)}
+.tech-row:hover{box-shadow:var(--shadow-md);transform:translateX(2px)}
+.tech-dot{width:10px;height:10px;border-radius:999px;flex-shrink:0}
+.tech-name{font-size:13px;font-weight:600;flex:1;font-family:var(--font-body)}
+.tech-cat{font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent)}
+
+/* ── SIGN-OFF QUEUE ── */
+.sq-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-surface);border-radius:var(--radius-lg);margin-bottom:var(--space-2);box-shadow:var(--shadow-sm)}
+
+/* ── SESSION BUILDER ── */
+.tech-builder{background:var(--color-neutral-100);border:1px solid var(--color-divider);border-radius:var(--radius-lg);padding:var(--space-3);margin-top:var(--space-2)}
+.added-tech{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);background:var(--color-surface);border-radius:999px;margin-bottom:var(--space-1);box-shadow:var(--shadow-sm)}
+.rm-tech{background:none;border:none;color:color-mix(in srgb,var(--color-text) 40%,transparent);cursor:pointer;font-size:14px;margin-left:auto;padding:2px;line-height:1}
+.rm-tech:hover{color:var(--color-accent)}
+
+/* ── BOOKING LIST EDITOR ── */
+.booking-list-item{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) 0;border-bottom:1px solid color-mix(in srgb,var(--color-text) 6%,transparent)}
+.booking-list-item:last-child{border-bottom:none}
+
+/* ── MISC ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3)}
+.bk-banner{background:var(--color-accent-2-100);border:1px solid var(--color-accent-2-300);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
+.info-banner{border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);display:flex;align-items:flex-start;gap:var(--space-3);margin-bottom:var(--space-4);font-size:13px;line-height:1.6}
+.info-banner.amber{background:color-mix(in srgb,#f59e0b 10%,transparent);border:1px solid color-mix(in srgb,#f59e0b 25%,transparent);color:#7c4a03}
+.info-banner.blue{background:color-mix(in srgb,#3b82f6 8%,transparent);border:1px solid color-mix(in srgb,#3b82f6 22%,transparent);color:#185FA5}
+.empty{text-align:center;padding:var(--space-8);color:color-mix(in srgb,var(--color-text) 45%,transparent);font-size:13px}
+.lock-note{display:flex;align-items:center;gap:var(--space-2);font-size:11px;color:#854F0B;background:color-mix(in srgb,#f59e0b 10%,transparent);border:1px solid color-mix(in srgb,#f59e0b 28%,transparent);border-radius:var(--radius-lg);padding:var(--space-2) var(--space-3);margin-bottom:var(--space-2)}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
+.sec-title{font-family:var(--font-heading);font-size:17px}
+.toast{position:fixed;bottom:var(--space-4);right:var(--space-4);background:var(--color-accent-2);color:#fff;padding:var(--space-2) var(--space-4);border-radius:999px;font-size:13px;font-weight:600;z-index:999;display:none;align-items:center;gap:var(--space-2);box-shadow:var(--shadow-lg);font-family:var(--font-body)}
+.toast.show{display:flex;animation:toastin .25s}
+@keyframes toastin{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+.divider{height:1px;border:0;margin:var(--space-4) 0;background:var(--color-divider)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">&#x1F9A9;</div>
+    <div>
+      <div class="logo-name">Flamingo BJJ</div>
+      <div class="logo-tag">Training platform &middot; Phase 1</div>
+    </div>
+  </div>
+  <div class="role-badge">
+    <div class="role-avatar" id="sidebar-avatar">CR</div>
+    <div>
+      <div class="role-name" id="sidebar-name">Coach Rodrigo</div>
+      <div class="role-type" id="sidebar-role">Coach &middot; Black belt</div>
+    </div>
+    <div class="role-switch" onclick="switchRole()">switch &rarr;</div>
+  </div>
+  <nav>
+    <div class="nav-group">Overview</div>
+    <button class="nav-item active" onclick="goto('dashboard')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </button>
+    <div class="nav-group">Coach tools</div>
+    <button class="nav-item" onclick="goto('sessions')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/></svg>
+      Sessions
+    </button>
+    <button class="nav-item" onclick="goto('register')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+      Attendance register
+    </button>
+    <button class="nav-item" onclick="goto('approval')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Attendance approval
+      <span class="nav-badge" id="pending-badge">2</span>
+    </button>
+    <button class="nav-item" onclick="goto('signoff')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Sign-off queue
+      <span class="nav-badge" id="signoff-badge">1</span>
+    </button>
+    <button class="nav-item" onclick="goto('members')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Members
+    </button>
+    <button class="nav-item" onclick="goto('library')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg>
+      Technique library
+    </button>
+    <div class="nav-group">My training</div>
+    <button class="nav-item" onclick="goto('my-training')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      My training
+      <span class="nav-badge" id="upcoming-badge">1</span>
+    </button>
+    <button class="nav-item" onclick="goto('book')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+      Book a class
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <div style="font-size:10px;color:color-mix(in srgb,var(--color-text) 40%,transparent)">Organic &middot; Phase 1 &middot; i2</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div class="page-head">
+    <div>
+      <div class="page-title" id="dash-greeting">Good evening, Coach &#x1F9A9;</div>
+      <p class="page-sub">Flamingo BJJ &middot; Wednesday session</p>
+    </div>
+    <button class="btn btn-primary" id="dash-cta" onclick="goto('sessions')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      New session
+    </button>
+  </div>
+  <div class="stats" id="dash-stats"></div>
+  <div class="grid2">
+    <div>
+      <div class="sec-head"><div class="sec-title">Upcoming sessions</div><span style="font-size:12px;color:var(--color-accent);cursor:pointer" onclick="goto('book')">View all &rarr;</span></div>
+      <div id="upcoming-preview"></div>
+    </div>
+    <div>
+      <div class="sec-head"><div class="sec-title">Recent techniques</div></div>
+      <div id="recent-techniques"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SESSIONS -->
+<div id="page-sessions" class="page">
+  <div class="page-head">
+    <div><div class="page-title">Sessions</div><p class="page-sub">Create and manage training sessions</p></div>
+    <button class="btn btn-primary" onclick="openCreateSession()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      Create session
+    </button>
+  </div>
+  <div class="session-grid" id="session-grid"></div>
+</div>
+
+<!-- REGISTER -->
+<div id="page-register" class="page">
+  <div class="page-head">
+    <div><div class="page-title">Attendance register</div><p class="page-sub">All members &times; all sessions at a glance</p></div>
+    <select class="input" id="reg-filter" onchange="renderRegister()" style="width:auto;padding:6px 14px;font-size:12px">
+      <option value="all">All types</option><option>Adult</option><option>Kids</option><option>Open mat</option>
+    </select>
+  </div>
+  <div style="display:flex;gap:var(--space-4);margin-bottom:var(--space-4);flex-wrap:wrap;font-size:12px;color:color-mix(in srgb,var(--color-text) 55%,transparent)">
+    <span style="display:flex;align-items:center;gap:6px"><div class="rdot dot-a">&#x2713;</div>Attended</span>
+    <span style="display:flex;align-items:center;gap:6px"><div class="rdot dot-x">&#x2717;</div>Absent</span>
+    <span style="display:flex;align-items:center;gap:6px"><div class="rdot dot-b">?</div>Booked / pending</span>
+    <span style="display:flex;align-items:center;gap:6px"><div class="rdot dot-n">&ndash;</div>Not booked</span>
+  </div>
+  <div class="register-wrap"><table class="reg-table" id="reg-table"></table></div>
+</div>
+
+<!-- APPROVAL -->
+<div id="page-approval" class="page">
+  <div class="page-head"><div><div class="page-title">Attendance approval</div><p class="page-sub">Confirm who showed up &mdash; updates streak and technique log</p></div></div>
+  <div class="info-banner amber">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    All booked members are marked <strong>Attended</strong> by default. Uncheck no-shows then press <strong>Confirm attendance</strong>.
+  </div>
+  <div id="approval-list"></div>
+</div>
+
+<!-- SIGN-OFF -->
+<div id="page-signoff" class="page">
+  <div class="page-head"><div><div class="page-title">Sign-off queue</div><p class="page-sub">Members who self-rated &ldquo;Can apply&rdquo; &mdash; awaiting coach verification</p></div></div>
+  <div id="signoff-list"></div>
+</div>
+
+<!-- MEMBERS -->
+<div id="page-members" class="page">
+  <div class="page-head"><div><div class="page-title">Members</div><p class="page-sub">7 active members (demo)</p></div></div>
+  <div id="member-table"></div>
+</div>
+
+<!-- LIBRARY -->
+<div id="page-library" class="page">
+  <div class="page-head">
+    <div><div class="page-title">Technique library</div><p class="page-sub">Auto-built from session topics</p></div>
+    <select class="input" id="lib-filter" onchange="renderLibrary()" style="width:auto;padding:6px 14px;font-size:12px">
+      <option value="">All categories</option><option>Submission</option><option>Guard</option><option>Takedown</option><option>Escape</option><option>Kids</option>
+    </select>
+  </div>
+  <div class="tech-list" id="tech-list"></div>
+</div>
+
+<!-- MY TRAINING -->
+<div id="page-my-training" class="page">
+  <div class="page-head"><div><div class="page-title">My training</div><p class="page-sub">Sessions attended and techniques logged</p></div></div>
+  <div class="tab-bar" style="max-width:300px">
+    <button class="tab-btn active" onclick="switchTab('tab-sessions','tab-techniques',this)">Sessions</button>
+    <button class="tab-btn" onclick="switchTab('tab-techniques','tab-sessions',this)">Techniques</button>
+  </div>
+  <div id="tab-sessions" class="tab-content active"><div class="member-timeline" id="member-timeline"></div></div>
+  <div id="tab-techniques" class="tab-content"><div id="techniques-table"></div></div>
+</div>
+
+<!-- BOOK -->
+<div id="page-book" class="page">
+  <div class="page-head"><div><div class="page-title">Book a class</div><p class="page-sub">Upcoming sessions open for booking</p></div></div>
+  <div id="book-section"></div>
+  <div style="margin-top:var(--space-8)">
+    <div class="sec-head"><div class="sec-title">Request a private session</div></div>
+    <div class="card elev-sm" style="max-width:560px">
+      <div style="display:flex;gap:var(--space-4);align-items:flex-start">
+        <div style="font-size:32px">&#x1F94B;</div>
+        <div style="flex:1">
+          <div class="card-title" style="margin-bottom:var(--space-1)">1-on-1 with Coach Rodrigo</div>
+          <p class="card-body" style="margin-bottom:var(--space-3)">Choose a focus area. Coach will confirm a time within 24h.</p>
+          <div class="grid2" style="gap:var(--space-3);margin-bottom:var(--space-3)">
+            <div class="field"><label>Focus area</label>
+              <select class="input" id="private-focus"><option>Guard passing</option><option>Submissions</option><option>Takedowns</option><option>Escapes</option><option>Competition prep</option></select>
+            </div>
+            <div class="field"><label>Preferred date</label><input type="date" class="input" id="private-date"/></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="requestPrivate()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            Request session
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- CREATE / EDIT SESSION DIALOG -->
+<div class="dialog-backdrop" id="modal-session" style="display:none">
+  <div class="dialog" style="width:min(520px,92vw);max-height:88vh;overflow-y:auto">
+    <div class="dialog-title" id="session-modal-title">Create session</div>
+    <div class="grid2">
+      <div class="field"><label>Date</label><input type="date" class="input" id="s-date"/></div>
+      <div class="field"><label>Time</label><input type="time" class="input" id="s-time" value="18:30"/></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Class type</label>
+        <select class="input" id="s-type"><option>Adult</option><option>Kids</option><option>Open mat</option><option>Competition</option></select>
+      </div>
+      <div class="field"><label>Capacity</label><input type="text" class="input" id="s-capacity" value="20"/></div>
+    </div>
+    <div class="field"><label>Session title</label><input type="text" class="input" id="s-title" placeholder="e.g. Back control fundamentals"/></div>
+    <div class="field">
+      <label>Techniques <span style="opacity:.55">(auto-added to library)</span></label>
+      <div id="tech-lock-note" class="lock-note" style="display:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="11" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Locked &mdash; attendance already confirmed
+      </div>
+      <div class="tech-builder" id="tech-builder">
+        <div style="display:flex;gap:var(--space-2);margin-bottom:var(--space-2)">
+          <input type="text" class="input" id="tech-input" placeholder="Technique name..." style="flex:1"/>
+          <select class="input" id="tech-cat" style="width:auto;padding:6px 14px;font-size:12px">
+            <option>Submission</option><option>Guard</option><option>Takedown</option><option>Escape</option><option>Kids</option>
+          </select>
+          <button class="btn btn-secondary btn-sm" onclick="addTech()">+ Add</button>
+        </div>
+        <div id="tech-list-edit"></div>
+      </div>
+    </div>
+    <div class="field"><label>Video URL <span style="opacity:.55">(optional)</span></label><input type="text" class="input" id="s-video" placeholder="https://youtube.com/..."/></div>
+    <div class="field"><label>Coach notes</label><textarea class="input" id="s-notes" placeholder="Drill sequence, focus points..."></textarea></div>
+    <div id="booking-editor" style="display:none">
+      <hr class="hr"/>
+      <div style="font-size:12px;font-weight:600;color:color-mix(in srgb,var(--color-text) 60%,transparent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:var(--space-2)">Booking list</div>
+      <div id="booking-list-edit"></div>
+      <div style="display:flex;gap:var(--space-2);margin-top:var(--space-2)">
+        <select class="input" id="add-member-sel" style="flex:1"></select>
+        <button class="btn btn-secondary btn-sm" onclick="addMemberBooking()">+ Add member</button>
+      </div>
+    </div>
+    <div class="dialog-actions" style="margin-top:var(--space-2)">
+      <button class="btn btn-secondary" onclick="closeModal('modal-session')">Cancel</button>
+      <button class="btn btn-primary" id="session-save-btn" onclick="saveSession()">Publish session</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING DIALOG -->
+<div class="dialog-backdrop" id="modal-booking" style="display:none">
+  <div class="dialog">
+    <div class="dialog-title" id="bm-title">Book session</div>
+    <div id="bm-body"></div>
+  </div>
+</div>
+
+<!-- TECH DIALOG -->
+<div class="dialog-backdrop" id="modal-tech" style="display:none">
+  <div class="dialog">
+    <div id="tech-modal-body"></div>
+    <div class="dialog-actions"><button class="btn btn-secondary" onclick="closeModal('modal-tech')">Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+<script>
+/* ── CONSTANTS ── */
+const TC_ADULT='var(--color-accent)';
+const TC_KIDS='var(--color-accent-2)';
+const TC_OPEN='var(--color-neutral-600)';
+const PL={0:'Not rated',1:'Need reps',2:'Getting it',3:'Can apply',4:'Coach sign-off'};
+const PI={0:'&ndash;',1:'&#x21BA;',2:'&bull;&bull;&bull;',3:'&#x2713;',4:'&#x2605;'};
+const CAT_COLOR={Submission:TC_ADULT,Guard:'var(--color-accent-2)',Takedown:'#c8a430',Escape:'var(--color-accent-2-600)',Kids:'var(--color-accent-500)'};
+const MIN_DAYS={0:0,1:3,2:7};
+
+/* ── STATE ── */
+let role='coach';let editId=null;let editTechs=[];let editBookings=[];
+let approvalState={};let confirmed=new Set();
+
+let sessions=[
+  {id:1,date:'2025-06-16',time:'18:30',type:'Adult',title:'Back control & chokes',techniques:[{name:'Rear Naked Choke',cat:'Submission'},{name:'Body triangle',cat:'Guard'}],video:'https://youtube.com',notes:'Focus on seatbelt grip first',capacity:20,booked:[1,2,5,6]},
+  {id:2,date:'2025-06-17',time:'17:00',type:'Kids',title:'Hip escapes & movement',techniques:[{name:'Shrimp drill',cat:'Kids'},{name:'Bridge & roll',cat:'Escape'}],video:'',notes:'Fun relay races',capacity:15,booked:[4]},
+  {id:3,date:'2025-06-21',time:'10:00',type:'Open mat',title:'Open mat Saturday',techniques:[],video:'',notes:'Free rolling',capacity:30,booked:[]},
+  {id:4,date:'2025-06-22',time:'18:30',type:'Adult',title:'Guard passing series',techniques:[{name:'Torreando pass',cat:'Guard'},{name:'X-pass',cat:'Guard'},{name:'Stack pass',cat:'Guard'}],video:'https://youtube.com',notes:'10 reps each side',capacity:20,booked:[]},
+];
+
+let techniques=[
+  {id:1,name:'Rear Naked Choke',cat:'Submission',belt:'All belts',sessions:[1],video:'https://youtube.com'},
+  {id:2,name:'Body triangle',cat:'Guard',belt:'Blue',sessions:[1],video:''},
+  {id:3,name:'Shrimp drill',cat:'Kids',belt:'White',sessions:[2],video:''},
+  {id:4,name:'Bridge & roll',cat:'Escape',belt:'White',sessions:[2],video:''},
+  {id:5,name:'Torreando pass',cat:'Guard',belt:'Blue',sessions:[4],video:'https://youtube.com'},
+  {id:6,name:'X-pass',cat:'Guard',belt:'Blue',sessions:[4],video:''},
+  {id:7,name:'Stack pass',cat:'Guard',belt:'Blue',sessions:[4],video:''},
+  {id:8,name:'Single leg takedown',cat:'Takedown',belt:'White',sessions:[],video:''},
+  {id:9,name:'Armbar from guard',cat:'Submission',belt:'Blue',sessions:[],video:'https://youtube.com'},
+];
+
+let members=[
+  {id:1,name:'Ana Pereira',belt:'Blue',stripes:1,age:'Adult',classes:34,streak:8},
+  {id:2,name:'Marcus Kim',belt:'White',stripes:3,age:'Adult',classes:28,streak:10},
+  {id:3,name:'James Okafor',belt:'Purple',stripes:2,age:'Adult',classes:67,streak:5},
+  {id:4,name:'Sofia Lima',belt:'White',stripes:1,age:'Kids',classes:12,streak:3},
+  {id:5,name:'David Torres',belt:'Blue',stripes:3,age:'Adult',classes:45,streak:12},
+  {id:6,name:'Priya Nair',belt:'White',stripes:2,age:'Adult',classes:18,streak:4},
+  {id:7,name:'Carlos Mendez',belt:'Brown',stripes:1,age:'Adult',classes:98,streak:9},
+];
+
+const ME=1;
+let myBookings=[1,2];
+let PD={'1_Rear Naked Choke':{level:2,updatedAt:'2025-06-16'},'1_Body triangle':{level:0,updatedAt:'2025-06-16'}};
+let TA=[
+  {techName:'Rear Naked Choke',cat:'Submission',sid:1,stitle:'Back control & chokes',date:'2025-06-16',mid:1},
+  {techName:'Body triangle',cat:'Guard',sid:1,stitle:'Back control & chokes',date:'2025-06-16',mid:1},
+];
+
+function initApproval(){
+  sessions.forEach(s=>{if(s.booked.length&&!approvalState[s.id]){approvalState[s.id]={};s.booked.forEach(m=>{approvalState[s.id][m]=true;});}});
+}
+initApproval();
+
+/* ── HELPERS ── */
+function TC(t){return t==='Kids'?TC_KIDS:t==='Open mat'?TC_OPEN:TC_ADULT;}
+function today(){return new Date().toISOString().split('T')[0];}
+function fmt(d){return new Date(d+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});}
+function ini(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2);}
+function openModal(id){document.getElementById(id).style.display='grid';}
+function closeModal(id){document.getElementById(id).style.display='none';}
+document.querySelectorAll('.dialog-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.style.display='none';}));
+let tt;
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2800);}
+
+function updateBadges(){
+  document.getElementById('pending-badge').textContent=sessions.filter(s=>s.booked.length&&!confirmed.has(s.id)).length;
+  document.getElementById('signoff-badge').textContent=Object.values(PD).filter(v=>v.level===3).length;
+  document.getElementById('upcoming-badge').textContent=myBookings.filter(id=>{const s=sessions.find(x=>x.id===id);return s&&s.date>=today();}).length;
+}
+
+/* ── NAV ── */
+function goto(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b=>{if((b.getAttribute('onclick')||'').includes("'"+page+"'"))b.classList.add('active');});
+  const fn={sessions:renderSessions,register:renderRegister,approval:renderApproval,signoff:renderSignoff,members:renderMembers,library:renderLibrary,dashboard:renderDashboard,book:renderBook};
+  if(fn[page])fn[page]();
+  if(page==='my-training'){renderTimeline();renderTechTable();}
+}
+
+function switchTab(show,hide,btn){
+  document.getElementById(show).classList.add('active');document.getElementById(hide).classList.remove('active');
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  if(show==='tab-techniques')renderTechTable();if(show==='tab-sessions')renderTimeline();
+}
+
+/* ── ROLE SWITCH ── */
+function switchRole(){
+  role=role==='coach'?'member':'coach';const c=role==='coach';
+  document.getElementById('sidebar-avatar').textContent=c?'CR':'AP';
+  document.getElementById('sidebar-name').textContent=c?'Coach Rodrigo':'Ana Pereira';
+  document.getElementById('sidebar-role').textContent=c?'Coach \u00b7 Black belt':'Member \u00b7 Blue belt';
+  document.getElementById('dash-greeting').textContent=c?'Good evening, Coach \uD83E\uDDA9':'Good evening, Ana \uD83E\uDDA9';
+  const cta=document.getElementById('dash-cta');
+  cta.innerHTML=c?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>New session':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>Book a class';
+  cta.onclick=c?()=>goto('sessions'):()=>goto('book');
+  renderDashboard();showToast('Switched to '+(c?'Coach':'Member')+' view');
+}
+
+/* ── DASHBOARD ── */
+function renderDashboard(){
+  const c=role==='coach';const p=sessions.filter(s=>s.booked.length&&!confirmed.has(s.id)).length;
+  const sq=Object.values(PD).filter(v=>v.level===3).length;const m=members.find(x=>x.id===ME);
+  document.getElementById('dash-stats').innerHTML=c?
+    '<div class="stat" onclick="goto(\'members\')" style="cursor:pointer"><div class="card-kicker">Members</div><div class="stat-val">58</div><div class="stat-lbl">Active this month</div></div>'+
+    '<div class="stat"><div class="card-kicker">Sessions</div><div class="stat-val">'+sessions.filter(s=>s.date>=today()).length+'</div><div class="stat-lbl">Upcoming</div></div>'+
+    '<div class="stat" onclick="goto(\'approval\')" style="cursor:pointer"><div class="card-kicker">Approval</div><div class="stat-val">'+p+'</div><div class="stat-lbl">Awaiting review</div></div>'+
+    '<div class="stat" onclick="goto(\'signoff\')" style="cursor:pointer"><div class="card-kicker">Sign-off</div><div class="stat-val">'+sq+'</div><div class="stat-lbl">Ready to verify</div></div>'
+    :
+    '<div class="stat"><div class="card-kicker">Streak</div><div class="stat-val">'+m.streak+'</div><div class="stat-lbl">Weeks</div></div>'+
+    '<div class="stat"><div class="card-kicker">Classes</div><div class="stat-val">'+m.classes+'</div><div class="stat-lbl">Attended</div></div>'+
+    '<div class="stat"><div class="card-kicker">Techniques</div><div class="stat-val">'+TA.filter(t=>t.mid===ME).length+'</div><div class="stat-lbl">Logged</div></div>'+
+    '<div class="stat"><div class="card-kicker">Mastered</div><div class="stat-val">'+Object.keys(PD).filter(k=>k.startsWith(ME+'_')&&PD[k].level>=3).length+'</div><div class="stat-lbl">Can apply +</div></div>';
+
+  const up=sessions.filter(s=>s.date>=today()).slice(0,2);
+  document.getElementById('upcoming-preview').innerHTML=up.map(miniCard).join('')||'<div class="empty">No upcoming sessions</div>';
+  const rec=[...techniques].reverse().slice(0,5);
+  document.getElementById('recent-techniques').innerHTML='<div style="display:flex;flex-direction:column;gap:var(--space-1)">'+rec.map(t=>
+    '<div class="tech-row" onclick="openTechModal('+t.id+')" style="padding:var(--space-2) var(--space-3)">'+
+    '<div class="tech-dot" style="background:'+CAT_COLOR[t.cat]+';width:8px;height:8px"></div>'+
+    '<div class="tech-name" style="font-size:12px">'+t.name+'</div>'+
+    '<div class="tag tag-neutral" style="font-size:10px">'+t.cat+'</div>'+
+    '</div>').join('')+'</div>';
+  updateBadges();
+}
+
+function miniCard(s){
+  const tc=TC(s.type);const ib=myBookings.includes(s.id);
+  return '<div class="card elev-sm" style="margin-bottom:var(--space-2)">'+
+    '<div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1)">'+
+    '<div style="width:8px;height:8px;border-radius:999px;background:'+tc+';flex-shrink:0"></div>'+
+    '<span style="font-size:11px;color:color-mix(in srgb,var(--color-text) 55%,transparent)">'+fmt(s.date)+' &middot; '+s.time+'</span>'+
+    (ib?'<span class="tag tag-accent-2" style="margin-left:auto;font-size:10px">Booked</span>':'')+
+    '</div>'+
+    '<div class="card-title" style="font-size:15px;margin-bottom:var(--space-1)">'+s.title+'</div>'+
+    '<div style="font-size:12px;color:color-mix(in srgb,var(--color-text) 55%,transparent)">'+(s.techniques.map(t=>t.name).join(' &middot; ')||'Open mat')+'</div>'+
+    '</div>';
+}
+
+/* ── SESSIONS ── */
+function renderSessions(){document.getElementById('session-grid').innerHTML=sessions.map(sCard).join('');}
+
+function sCard(s){
+  const tc=TC(s.type);const ib=myBookings.includes(s.id);const ic=confirmed.has(s.id);const ip=s.date<today();const isc=role==='coach';
+  const typeLabel=s.type==='Open mat'?'Open mat':s.type;
+  const tagClass=s.type==='Kids'?'tag-accent-2':s.type==='Open mat'?'tag-neutral':'tag-accent';
+  return '<div class="session-card">'+
+    '<div class="session-accent" style="background:'+tc+'"></div>'+
+    '<div class="session-body">'+
+    '<div class="session-meta">'+
+    '<span class="tag '+tagClass+'">'+typeLabel+'</span>'+
+    (ip&&s.booked.length?'<span class="tag '+(ic?'tag-accent-2':'tag-outline')+'" style="font-size:10px">'+(ic?'Approved':'Pending approval')+'</span>':'')+
+    '<span class="session-date">'+fmt(s.date)+' &middot; '+s.time+'</span></div>'+
+    '<div class="session-title">'+s.title+'</div>'+
+    '<div class="session-tech">'+(s.techniques.length?s.techniques.map(t=>t.name).join(' &middot; '):'Open mat &mdash; free rolling')+'</div>'+
+    (s.video?'<div style="font-size:11px;color:var(--color-accent);margin-bottom:var(--space-2)">&#x25B6; Pre-class video attached</div>':'')+
+    '<div class="session-footer">'+
+    '<div style="font-size:12px;color:color-mix(in srgb,var(--color-text) 55%,transparent)">'+s.booked.length+' booked &middot; '+(s.capacity-s.booked.length)+' spots left</div>'+
+    (isc?'<button class="btn btn-secondary btn-xs" onclick="openEditSession('+s.id+')">Edit</button>':'')+
+    (ib?'<span class="tag tag-accent-2">&#x2713; Booked</span>':
+     !isc?'<button class="btn btn-primary btn-xs" onclick="openBooking('+s.id+')">Book</button>':
+     ip&&s.booked.length&&!ic?'<button class="btn btn-secondary btn-xs" onclick="goto(\'approval\')">Approve</button>':'')+
+    '</div></div></div>';
+}
+
+/* ── SESSION CREATE/EDIT ── */
+function openCreateSession(){
+  editId=null;editTechs=[];
+  ['s-title','s-video','s-notes','tech-input'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('s-capacity').value='20';document.getElementById('s-type').value='Adult';
+  const d=new Date();d.setDate(d.getDate()+1);document.getElementById('s-date').value=d.toISOString().split('T')[0];
+  document.getElementById('s-time').value='18:30';
+  document.getElementById('session-modal-title').textContent='Create session';
+  document.getElementById('session-save-btn').textContent='Publish session';
+  document.getElementById('tech-lock-note').style.display='none';
+  document.getElementById('tech-builder').style.display='block';
+  document.getElementById('booking-editor').style.display='none';
+  renderEditTechs();openModal('modal-session');
+}
+
+function openEditSession(sid){
+  const s=sessions.find(x=>x.id===sid);if(!s)return;
+  editId=sid;editTechs=[...s.techniques];editBookings=[...s.booked];
+  document.getElementById('s-title').value=s.title;document.getElementById('s-date').value=s.date;
+  document.getElementById('s-time').value=s.time;document.getElementById('s-type').value=s.type;
+  document.getElementById('s-capacity').value=s.capacity;document.getElementById('s-video').value=s.video||'';
+  document.getElementById('s-notes').value=s.notes||'';
+  document.getElementById('session-modal-title').textContent='Edit session';
+  document.getElementById('session-save-btn').textContent='Save changes';
+  const locked=confirmed.has(sid);
+  document.getElementById('tech-lock-note').style.display=locked?'flex':'none';
+  document.getElementById('tech-builder').style.display=locked?'none':'block';
+  document.getElementById('booking-editor').style.display='block';
+  renderEditTechs();renderBookingEdit();openModal('modal-session');
+}
+
+function renderEditTechs(){
+  const el=document.getElementById('tech-list-edit');
+  if(!editTechs.length){el.innerHTML='<div style="font-size:12px;opacity:.5;text-align:center;padding:var(--space-2)">No techniques added yet</div>';return;}
+  el.innerHTML=editTechs.map((t,i)=>'<div class="added-tech">'+
+    '<div class="tech-dot" style="background:'+CAT_COLOR[t.cat]+';width:8px;height:8px;flex-shrink:0"></div>'+
+    '<span style="font-size:12px;font-weight:600;flex:1">'+t.name+'</span>'+
+    '<span class="tag tag-neutral" style="font-size:10px">'+t.cat+'</span>'+
+    '<button class="rm-tech" onclick="rmTech('+i+')">&#x2715;</button>'+
+    '</div>').join('');
+}
+
+function addTech(){
+  const n=document.getElementById('tech-input').value.trim();const c=document.getElementById('tech-cat').value;
+  if(!n)return;editTechs.push({name:n,cat:c});document.getElementById('tech-input').value='';renderEditTechs();
+}
+function rmTech(i){editTechs.splice(i,1);renderEditTechs();}
+
+function renderBookingEdit(){
+  const el=document.getElementById('booking-list-edit');
+  el.innerHTML=editBookings.length?editBookings.map(mid=>{
+    const m=members.find(x=>x.id===mid);if(!m)return'';
+    return '<div class="booking-list-item">'+
+      '<div class="rav">'+ini(m.name)+'</div>'+
+      '<span style="font-size:13px;font-weight:600;flex:1">'+m.name+'</span>'+
+      '<span style="font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent)">'+m.belt+'</span>'+
+      (!confirmed.has(editId)?'<button onclick="rmBooking('+mid+')" style="background:none;border:none;color:color-mix(in srgb,var(--color-text) 40%,transparent);cursor:pointer;font-size:14px;padding:2px" title="Remove">&#x2715;</button>':'<span style="font-size:10px;opacity:.5">locked</span>')+
+      '</div>';
+  }).join(''):'<div style="font-size:12px;opacity:.5;padding:var(--space-2) 0">No members booked yet</div>';
+  const sel=document.getElementById('add-member-sel');
+  const av=members.filter(m=>!editBookings.includes(m.id));
+  sel.innerHTML=av.length?av.map(m=>'<option value="'+m.id+'">'+m.name+' ('+m.belt+')</option>').join(''):'<option disabled>All members booked</option>';
+}
+
+function addMemberBooking(){
+  if(confirmed.has(editId)){showToast('Attendance already confirmed');return;}
+  const mid=parseInt(document.getElementById('add-member-sel').value);
+  if(!mid||editBookings.includes(mid))return;editBookings.push(mid);renderBookingEdit();
+}
+function rmBooking(mid){
+  if(confirmed.has(editId)){showToast('Attendance already confirmed');return;}
+  editBookings=editBookings.filter(x=>x!==mid);renderBookingEdit();
+}
+
+function saveSession(){
+  const title=document.getElementById('s-title').value.trim();const date=document.getElementById('s-date').value;
+  if(!title||!date){showToast('Add a title and date first');return;}
+  if(editId){
+    const s=sessions.find(x=>x.id===editId);
+    s.title=title;s.date=date;s.time=document.getElementById('s-time').value;
+    s.type=document.getElementById('s-type').value;s.capacity=parseInt(document.getElementById('s-capacity').value)||20;
+    s.video=document.getElementById('s-video').value;s.notes=document.getElementById('s-notes').value;
+    if(!confirmed.has(editId)){
+      s.booked=[...editBookings];
+      if(!approvalState[s.id])approvalState[s.id]={};
+      editBookings.forEach(m=>{if(approvalState[s.id][m]===undefined)approvalState[s.id][m]=true;});
+      s.techniques=[...editTechs];syncLib(s);
+    }
+    closeModal('modal-session');renderSessions();showToast('Session updated');
+  } else {
+    const ns={id:Date.now(),date,time:document.getElementById('s-time').value,type:document.getElementById('s-type').value,title,techniques:[...editTechs],video:document.getElementById('s-video').value,notes:document.getElementById('s-notes').value,capacity:parseInt(document.getElementById('s-capacity').value)||20,booked:[]};
+    sessions.unshift(ns);const n=syncLib(ns);
+    closeModal('modal-session');renderSessions();
+    showToast('Session published!'+(n?' &middot; '+n+' technique'+(n>1?'s':'')+' added to library':''));
+  }
+  updateBadges();
+}
+
+function syncLib(s){
+  let n=0;s.techniques.forEach(t=>{
+    const e=techniques.find(x=>x.name.toLowerCase()===t.name.toLowerCase());
+    if(e){if(!e.sessions.includes(s.id))e.sessions.push(s.id);}
+    else{techniques.push({id:Date.now()+Math.random(),name:t.name,cat:t.cat,belt:'All belts',sessions:[s.id],video:''});n++;}
+  });return n;
+}
+
+/* ── REGISTER ── */
+function renderRegister(){
+  const tf=document.getElementById('reg-filter').value;
+  let ss=sessions.filter(s=>s.booked.length>0||s.date<today());
+  if(tf!=='all')ss=ss.filter(s=>s.type===tf);ss=ss.slice(0,8);
+  const thead='<thead><tr><th style="min-width:180px">Member</th><th style="min-width:60px;text-align:center;border-left:1px solid var(--color-divider)">Total</th>'+
+    ss.map(s=>'<th class="s-th" title="'+s.title+'">'+fmt(s.date).split(' ').slice(0,2).join(' ')+'<br><span style="font-weight:400;letter-spacing:0;text-transform:none;opacity:.7">'+s.type+'</span></th>').join('')+'</tr></thead>';
+  const tbody='<tbody>'+members.map(m=>{
+    const cells=ss.map(s=>{
+      const ib=s.booked.includes(m.id);const ic=confirmed.has(s.id);
+      if(!ib)return'<td class="dc"><div class="rdot dot-n">&ndash;</div></td>';
+      if(ic){const at=approvalState[s.id]&&approvalState[s.id][m.id]!==false;return'<td class="dc"><div class="rdot '+(at?'dot-a':'dot-x')+'">'+(at?'&#x2713;':'&#x2717;')+'</div></td>';}
+      return'<td class="dc"><div class="rdot dot-b">?</div></td>';
+    });
+    const tot=ss.filter(s=>s.booked.includes(m.id)&&confirmed.has(s.id)&&approvalState[s.id]&&approvalState[s.id][m.id]!==false).length;
+    return'<tr><td><div class="rmem"><div class="rav">'+ini(m.name)+'</div><div><div style="font-size:13px;font-weight:600">'+m.name+'</div><div style="font-size:11px;opacity:.55">'+m.belt+'</div></div></div></td>'+
+      '<td class="dc" style="font-size:12px;font-weight:700">'+tot+'/'+ss.length+'</td>'+cells.join('')+'</tr>';
+  }).join('')+'</tbody>';
+  document.getElementById('reg-table').innerHTML=thead+tbody;
+}
+
+/* ── APPROVAL ── */
+function renderApproval(){
+  const rel=sessions.filter(s=>s.booked.length).sort((a,b)=>(confirmed.has(a.id)?1:0)-(confirmed.has(b.id)?1:0)||new Date(b.date)-new Date(a.date));
+  if(!rel.length){document.getElementById('approval-list').innerHTML='<div class="empty">No sessions with bookings yet</div>';return;}
+  document.getElementById('approval-list').innerHTML=rel.map(s=>{
+    const tc=TC(s.type);const ic=confirmed.has(s.id);const st=approvalState[s.id]||{};
+    const ab=Object.values(st).filter(v=>!v).length;
+    return '<div class="approval-card">'+
+      '<div class="approval-header">'+
+      '<div style="width:4px;height:40px;background:'+tc+';border-radius:999px;flex-shrink:0"></div>'+
+      '<div style="flex:1"><div class="approval-title">'+s.title+'</div><div class="approval-meta">'+fmt(s.date)+' &middot; '+s.time+' &middot; '+s.booked.length+' booked</div></div>'+
+      '<span class="tag '+(ic?'tag-accent-2':'tag-accent')+'" style="font-size:10px">'+(ic?'Confirmed':'Pending')+'</span>'+
+      (ic?'<button class="btn btn-secondary btn-xs" onclick="reopenApproval('+s.id+')" style="margin-left:var(--space-2)">Reopen</button>':'')+
+      '</div>'+
+      '<div>'+s.booked.map(mid=>{
+        const m=members.find(x=>x.id===mid);if(!m)return'';const at=st[mid]!==false;
+        return '<div class="att-member-row '+(at?'':'absent')+'" id="amr-'+s.id+'-'+mid+'">'+
+          '<div class="att-avatar">'+ini(m.name)+'</div>'+
+          '<div style="flex:1"><div class="att-name">'+m.name+'</div><div class="att-sub">'+m.belt+' &middot; '+m.age+'</div></div>'+
+          '<div class="att-toggle">'+
+          '<span class="toggle-label" id="tl-'+s.id+'-'+mid+'" style="color:'+(at?'var(--color-accent-2)':'var(--color-accent)')+'">'+( at?'Attended':'Not attended')+'</span>'+
+          '<label class="tog"><input type="checkbox" '+(at?'checked':'')+' '+(ic?'disabled':'')+' onchange="togAtt('+s.id+','+mid+',this.checked)"/>'+
+          '<div class="tog-track"></div><div class="tog-thumb"></div></label></div></div>';
+      }).join('')+'</div>'+
+      '<div class="approval-footer">'+
+      '<div style="font-size:12px;color:color-mix(in srgb,var(--color-text) 55%,transparent)">'+(ab?'<strong style="color:var(--color-accent)">'+ab+'</strong> not attended':'All attended')+'</div>'+
+      (!ic?'<button class="btn btn-primary btn-sm" onclick="confirmAtt('+s.id+')">Confirm attendance</button>':
+      '<span style="font-size:12px;color:var(--color-accent-2);font-weight:600">&#x2713; Confirmed</span>')+
+      '</div></div>';
+  }).join('');
+}
+
+function togAtt(sid,mid,val){
+  if(!approvalState[sid])approvalState[sid]={};approvalState[sid][mid]=val;
+  const row=document.getElementById('amr-'+sid+'-'+mid);const lbl=document.getElementById('tl-'+sid+'-'+mid);
+  if(row)row.classList.toggle('absent',!val);
+  if(lbl){lbl.textContent=val?'Attended':'Not attended';lbl.style.color=val?'var(--color-accent-2)':'var(--color-accent)';}
+  const ab=Object.values(approvalState[sid]).filter(v=>!v).length;
+  const fd=document.querySelector('#approval-list .approval-footer div');
+}
+
+function confirmAtt(sid){
+  confirmed.add(sid);const s=sessions.find(x=>x.id===sid);const st=approvalState[sid]||{};
+  s.booked.forEach(mid=>{
+    const at=st[mid]!==false;const m=members.find(x=>x.id===mid);if(!m)return;
+    if(at){s.techniques.forEach(t=>{if(!TA.find(ta=>ta.techName===t.name&&ta.sid===sid&&ta.mid===mid)){TA.push({techName:t.name,cat:t.cat,sid,stitle:s.title,date:s.date,mid});if(!PD[mid+'_'+t.name])PD[mid+'_'+t.name]={level:0,updatedAt:s.date};}});}
+    else{TA=TA.filter(ta=>!(ta.sid===sid&&ta.mid===mid));if(m.streak>0)m.streak=Math.max(0,m.streak-1);}
+  });
+  updateBadges();showToast('Attendance confirmed');renderApproval();renderDashboard();
+}
+
+function reopenApproval(sid){
+  confirmed.delete(sid);const s=sessions.find(x=>x.id===sid);const st=approvalState[sid]||{};
+  s.booked.forEach(mid=>{if(st[mid]===false){const m=members.find(x=>x.id===mid);if(m)m.streak++;}TA=TA.filter(ta=>!(ta.sid===sid&&ta.mid===mid));});
+  updateBadges();showToast('Session reopened');renderApproval();
+}
+
+/* ── SIGN-OFF ── */
+function renderSignoff(){
+  const items=Object.entries(PD).filter(([k,v])=>v.level===3).map(([k,v])=>{
+    const parts=k.split(/_(.+)/);const mid=parseInt(parts[0]);const tn=parts[1];
+    const m=members.find(x=>x.id===mid);return{mid,tn,m,upd:v.updatedAt};
+  }).filter(x=>x.m);
+  const el=document.getElementById('signoff-list');
+  if(!items.length){el.innerHTML='<div class="empty">No members ready for sign-off yet.<br>They appear here after self-rating a technique as &ldquo;Can apply&rdquo;.</div>';return;}
+  el.innerHTML='<div class="info-banner blue">'+
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>'+
+    'Observe these members in rolling, then tap <strong>Sign off</strong> to confirm Level 4, or <strong>Not yet</strong> to send back for more drilling.</div>'+
+    items.map(it=>'<div class="sq-row">'+
+      '<div class="att-avatar">'+ini(it.m.name)+'</div>'+
+      '<div style="flex:1"><div style="font-size:13px;font-weight:600;font-family:var(--font-body)">'+it.m.name+'</div><div style="font-size:11px;opacity:.55">'+it.m.belt+' &middot; reported '+fmt(it.upd)+'</div></div>'+
+      '<div style="font-size:13px;font-weight:700;font-family:var(--font-heading);min-width:130px">'+it.tn+'</div>'+
+      '<span class="prof-badge prof-3">Can apply</span>'+
+      '<div style="display:flex;gap:var(--space-2)">'+
+      '<button class="btn btn-primary btn-sm" onclick="grantSO('+it.mid+',\''+it.tn+'\')">Sign off</button>'+
+      '<button class="btn btn-secondary btn-sm" onclick="denySO('+it.mid+',\''+it.tn+'\')">Not yet</button>'+
+      '</div></div>'
+    ).join('');
+}
+
+function grantSO(mid,tn){PD[mid+'_'+tn]={level:4,updatedAt:today()};showToast('Sign-off granted for '+tn);renderSignoff();updateBadges();}
+function denySO(mid,tn){PD[mid+'_'+tn]={level:2,updatedAt:today()};showToast('Moved back to \u201cGetting it\u201d \u2014 keep drilling');renderSignoff();updateBadges();}
+
+/* ── LIBRARY ── */
+function renderLibrary(){
+  const f=document.getElementById('lib-filter').value;
+  const show=f?techniques.filter(t=>t.cat===f):techniques;
+  document.getElementById('tech-list').innerHTML=show.map(t=>
+    '<div class="tech-row" onclick="openTechModal('+t.id+')">'+
+    '<div class="tech-dot" style="background:'+CAT_COLOR[t.cat]+';width:10px;height:10px"></div>'+
+    '<div><div class="tech-name">'+t.name+'</div><div class="tech-cat">'+t.cat+'</div></div>'+
+    '<span class="tag tag-neutral" style="font-size:10px">'+t.belt+'</span>'+
+    '<span style="font-size:11px;opacity:.5">'+t.sessions.length+' session'+(t.sessions.length!==1?'s':'')+'</span>'+
+    (t.video?'<span class="tag tag-accent" style="font-size:10px">Video</span>':'')+
+    '</div>'
+  ).join('')||'<div class="empty">No techniques found</div>';
+}
+
+function openTechModal(id){
+  const t=techniques.find(x=>x.id===id);if(!t)return;
+  const linked=sessions.filter(s=>t.sessions.includes(s.id));
+  document.getElementById('tech-modal-body').innerHTML=
+    '<div class="card-kicker" style="margin-bottom:var(--space-1)">'+t.cat+'</div>'+
+    '<div class="dialog-title">'+t.name+'</div>'+
+    (t.video?'<a href="'+t.video+'" target="_blank" class="btn btn-ghost" style="justify-content:flex-start;padding-left:0">&#x25B6; Watch video</a>':'<p style="font-size:13px;opacity:.55">No video attached</p>')+
+    '<hr class="hr"/>'+
+    '<div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.55;margin-bottom:var(--space-2)">Covered in '+linked.length+' session'+(linked.length!==1?'s':'')+'</div>'+
+    (linked.map(s=>'<div style="font-size:13px;padding:var(--space-2) 0;border-bottom:1px solid var(--color-divider)">'+fmt(s.date)+' &middot; '+s.title+'</div>').join('')||'<div style="font-size:12px;opacity:.5">Not yet covered in a session</div>');
+  openModal('modal-tech');
+}
+
+/* ── MEMBERS ── */
+function renderMembers(){
+  document.getElementById('member-table').innerHTML=
+    '<div style="overflow:hidden;border-radius:calc(var(--radius-lg)*1.15);box-shadow:var(--shadow-sm);background:var(--color-surface)">'+
+    '<table class="table"><thead><tr>'+
+    '<th>Member</th><th>Belt</th><th>Type</th><th>Classes</th><th>Streak</th>'+
+    '</tr></thead><tbody>'+
+    members.map(m=>'<tr>'+
+      '<td><div style="display:flex;align-items:center;gap:var(--space-2)"><div class="rav">'+ini(m.name)+'</div><span style="font-weight:600">'+m.name+'</span></div></td>'+
+      '<td><span class="tag tag-neutral">'+m.belt+'</span></td>'+
+      '<td style="opacity:.65">'+m.age+'</td>'+
+      '<td style="font-weight:600">'+m.classes+'</td>'+
+      '<td><span class="tag tag-accent-2">'+m.streak+' wks</span></td>'+
+      '</tr>').join('')+'</tbody></table></div>';
+}
+
+/* ── MY TRAINING — SESSIONS ── */
+function renderTimeline(){
+  const booked=sessions.filter(s=>myBookings.includes(s.id));
+  if(!booked.length){document.getElementById('member-timeline').innerHTML='<div class="empty">No sessions booked yet.<br><button class="btn btn-primary btn-sm" style="margin-top:var(--space-3)" onclick="goto(\'book\')">Browse sessions</button></div>';return;}
+  document.getElementById('member-timeline').innerHTML=booked.map(s=>{
+    const tc=TC(s.type);const ip=s.date<today();const ic=confirmed.has(s.id);
+    const at=!ic||(approvalState[s.id]&&approvalState[s.id][ME]!==false);
+    const tagClass=s.type==='Kids'?'tag-accent-2':s.type==='Open mat'?'tag-neutral':'tag-accent';
+    return '<div class="tl-card">'+
+      '<div class="tl-head">'+
+      '<div style="width:8px;height:8px;border-radius:999px;background:'+tc+';flex-shrink:0"></div>'+
+      '<span style="font-size:13px;font-weight:600;font-family:var(--font-body)">'+fmt(s.date)+' &middot; '+s.time+'</span>'+
+      '<span class="tag '+tagClass+' tl-type">'+s.type+'</span>'+
+      '</div>'+
+      '<div class="tl-body">'+
+      '<div class="tl-title">'+s.title+'</div>'+
+      (s.techniques.length?'<div class="tl-chips">'+s.techniques.map(t=>'<span class="tl-chip">'+t.name+'</span>').join('')+'</div>':'')+
+      (s.video?'<div style="margin-bottom:var(--space-2)"><a href="#" onclick="showToast(\'Opening video...\');return false;" class="btn btn-ghost btn-sm" style="padding-left:0">&#x25B6; Watch pre-class video</a></div>':'')+
+      (ic&&!at?'<div class="no-att"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Marked not attended by coach</div>':
+       s.techniques.length&&ip?
+        '<div class="prof-row">'+s.techniques.map(t=>{
+          const k=ME+'_'+t.name;const pd=PD[k]||{level:0};const lv=pd.level;
+          return '<div style="flex:1">'+
+            '<div style="font-size:9px;opacity:.5;margin-bottom:var(--space-1);text-align:center;font-family:var(--font-body)">'+(t.name.length>14?t.name.slice(0,13)+'&hellip;':t.name)+'</div>'+
+            '<div style="display:flex;flex-direction:column;gap:3px">'+
+            (lv===4?'<div class="prof-btn sel-4">&#x2605; Signed off</div>':
+            '<div class="prof-btn '+(lv===1?'sel-1':'')+'" onclick="setProf(\''+t.name+'\',\''+t.cat+'\',\''+s.title+'\',\''+s.date+'\',1,'+s.id+')">Need reps</div>'+
+            '<div class="prof-btn '+(lv===2?'sel-2':'')+'" onclick="setProf(\''+t.name+'\',\''+t.cat+'\',\''+s.title+'\',\''+s.date+'\',2,'+s.id+')">Getting it</div>'+
+            '<div class="prof-btn '+(lv===3?'sel-3':'')+'" onclick="setProf(\''+t.name+'\',\''+t.cat+'\',\''+s.title+'\',\''+s.date+'\',3,'+s.id+')">Can apply</div>')+
+            '</div></div>';
+        }).join('')+'</div>'
+       :s.techniques.length?'<div style="font-size:12px;opacity:.5;margin-top:var(--space-2);font-style:italic">Rate proficiency after class</div>':'')+
+      '</div></div>';
+  }).join('');
+}
+
+function setProf(tn,cat,stitle,date,lv,sid){
+  const k=ME+'_'+tn;const cur=PD[k]||{level:0,updatedAt:'2000-01-01'};
+  if(lv>3){showToast('Level 4 requires coach sign-off');return;}
+  if(lv>cur.level){const md=MIN_DAYS[cur.level];if(md!==undefined){const diff=Math.floor((new Date(today())-new Date(cur.updatedAt))/864e5);if(diff<md){showToast('Wait '+(md-diff)+' more day'+(md-diff!==1?'s':'')+' before upgrading');return;}}}
+  PD[k]={level:lv,updatedAt:today()};
+  if(!TA.find(ta=>ta.techName===tn&&ta.mid===ME))TA.push({techName:tn,cat,sid,stitle,date,mid:ME});
+  const msgs={1:'Logged \u2014 drilling soon',2:'Keep working',3:'Submitted for coach sign-off!'};
+  showToast(msgs[lv]||'Updated');renderTimeline();renderTechTable();renderDashboard();
+}
+
+/* ── MY TRAINING — TECHNIQUES ── */
+function renderTechTable(){
+  const my=TA.filter(ta=>ta.mid===ME);const el=document.getElementById('techniques-table');
+  if(!my.length){el.innerHTML='<div class="empty">No techniques logged yet</div>';return;}
+  el.innerHTML='<div style="overflow:hidden;border-radius:calc(var(--radius-lg)*1.15);box-shadow:var(--shadow-sm);background:var(--color-surface)">'+
+    '<table class="table"><thead><tr>'+
+    '<th>Technique</th><th>Category</th><th>Session</th><th>Date</th><th>Proficiency</th>'+
+    '</tr></thead><tbody>'+
+    my.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(ta=>{
+      const pd=PD[ME+'_'+ta.techName]||{level:0};const lv=pd.level;
+      const tagClass=lv===4?'tag-neutral':lv===3?'tag-accent-2':lv===2?'tag-neutral':lv===1?'tag-accent':'tag-neutral';
+      return '<tr>'+
+        '<td style="font-weight:600">'+ta.techName+'</td>'+
+        '<td><div style="display:flex;align-items:center;gap:6px"><div class="tech-dot" style="background:'+CAT_COLOR[ta.cat]+';width:8px;height:8px"></div>'+ta.cat+'</div></td>'+
+        '<td class="text-muted" style="font-size:12px">'+ta.stitle+'</td>'+
+        '<td class="text-muted" style="font-size:12px;white-space:nowrap">'+fmt(ta.date)+'</td>'+
+        '<td><span class="prof-badge prof-'+lv+'">'+PL[lv]+'</span></td>'+
+        '</tr>';
+    }).join('')+'</tbody></table></div>'+
+    '<div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap;font-size:11px;opacity:.65">'+
+    '<span><span class="prof-badge prof-4">Coach sign-off</span> Verified</span>'+
+    '<span><span class="prof-badge prof-3">Can apply</span> Awaiting sign-off</span>'+
+    '<span><span class="prof-badge prof-2">Getting it</span> Keep drilling</span>'+
+    '<span><span class="prof-badge prof-1">Need reps</span> Revisit soon</span>'+
+    '</div>';
+}
+
+/* ── BOOK ── */
+function renderBook(){
+  const av=sessions.filter(s=>s.date>=today()&&!myBookings.includes(s.id));
+  const bk=sessions.filter(s=>myBookings.includes(s.id)&&s.date>=today());
+  document.getElementById('book-section').innerHTML=
+    (bk.length?'<div class="sec-head"><div class="sec-title">Your upcoming bookings</div></div>'+
+    '<div class="session-grid" style="margin-bottom:var(--space-6)">'+bk.map(sCard).join('')+'</div>':'')+
+    '<div class="sec-head"><div class="sec-title">Available sessions</div></div>'+
+    (av.length?'<div class="session-grid">'+av.map(sCard).join('')+'</div>':'<div class="empty">You\'re all booked up!</div>');
+  document.getElementById('private-date').value=today();
+}
+
+function openBooking(sid){
+  const s=sessions.find(x=>x.id===sid);if(!s)return;const ib=myBookings.includes(sid);const tc=TC(s.type);
+  const tagClass=s.type==='Kids'?'tag-accent-2':s.type==='Open mat'?'tag-neutral':'tag-accent';
+  document.getElementById('bm-title').textContent=ib?'Session details':'Confirm booking';
+  document.getElementById('bm-body').innerHTML=
+    (ib?'<div class="bk-banner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-2);flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg><div><div style="font-weight:600;font-size:13px">You\'re booked in</div><div style="font-size:11px;opacity:.7">Content added to your training log</div></div></div>':'')+
+    '<div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-3)">'+
+    '<span class="tag '+tagClass+'">'+s.type+'</span>'+
+    '<span style="font-size:12px;opacity:.6">'+fmt(s.date)+' &middot; '+s.time+'</span></div>'+
+    '<div class="dialog-title" style="margin-bottom:var(--space-3)">'+s.title+'</div>'+
+    (s.techniques.length?'<div style="font-size:12px;opacity:.6;margin-bottom:var(--space-2)">Techniques covered</div>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:var(--space-1);margin-bottom:var(--space-3)">'+s.techniques.map(t=>'<span class="tl-chip">'+t.name+'</span>').join('')+'</div>':'')+
+    (s.video?'<div style="background:color-mix(in srgb,var(--color-accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--color-accent) 25%,transparent);border-radius:var(--radius-lg);padding:var(--space-2) var(--space-3);margin-bottom:var(--space-3);font-size:12px;color:var(--color-accent)">&#x25B6; Pre-class video &mdash; watch before you arrive</div>':'')+
+    (s.notes?'<div style="font-size:12px;opacity:.7;margin-bottom:var(--space-3);line-height:1.6;border-left:3px solid var(--color-accent-300);padding-left:var(--space-3)">'+s.notes+'</div>':'')+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:var(--space-3);border-top:1px solid var(--color-divider)">'+
+    '<span style="font-size:12px;opacity:.6">'+(s.capacity-s.booked.length)+' spots remaining</span>'+
+    (!ib?'<button class="btn btn-primary" onclick="confirmBooking('+sid+')">Confirm booking</button>':
+    '<button class="btn btn-secondary btn-sm" onclick="cancelBooking('+sid+')">Cancel booking</button>')+
+    '</div>';
+  openModal('modal-booking');
+}
+
+function confirmBooking(sid){
+  if(!myBookings.includes(sid)){myBookings.push(sid);const s=sessions.find(x=>x.id===sid);if(s&&!s.booked.includes(ME))s.booked.push(ME);if(!approvalState[sid])approvalState[sid]={};approvalState[sid][ME]=true;}
+  updateBadges();closeModal('modal-booking');showToast('Booked! Content added to your training log');
+  const pb=document.getElementById('page-book');const ps=document.getElementById('page-sessions');const pd=document.getElementById('page-dashboard');
+  if(pb.classList.contains('active'))renderBook();if(ps.classList.contains('active'))renderSessions();if(pd.classList.contains('active'))renderDashboard();
+}
+
+function cancelBooking(sid){myBookings=myBookings.filter(x=>x!==sid);closeModal('modal-booking');showToast('Booking cancelled');renderBook();}
+function requestPrivate(){showToast('Private session request sent!');};
+
+renderDashboard();
+</script>
+</body>
+</html>
