@@ -44,20 +44,40 @@ function parseBody(body: unknown): RsvpInput | null {
   };
 }
 
-async function saveToGoogleForm(r: RsvpInput, sessionTitles: string[]): Promise<boolean> {
+async function postToGoogleForm(r: RsvpInput, sessionValues: string[]): Promise<number> {
   const form = new URLSearchParams();
   form.append(FORM_ENTRIES.name, r.name.trim());
   form.append(FORM_ENTRIES.phone, r.phone.trim());
   form.append(FORM_ENTRIES.guests, String(r.guests));
-  for (const title of sessionTitles) form.append(FORM_ENTRIES.sessions, title);
+  for (const value of sessionValues) form.append(FORM_ENTRIES.sessions, value);
+  const res = await fetch(FORM_URL, {
+    method: "POST",
+    body: form,
+    // A redirect here means Google wants a sign-in, i.e. nothing was saved.
+    redirect: "manual",
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) {
+    const where = res.headers.get("location") ?? "";
+    const body = (await res.text()).replace(/\s+/g, " ").slice(0, 300);
+    console.error(`RSVP: Google Form responded ${res.status}`, where || body);
+    if (where.includes("accounts.google.com")) {
+      console.error("RSVP: the form requires Google sign-in — turn off “Restrict to users in <organisation>” in the form's settings");
+    }
+  }
+  return res.status;
+}
+
+async function saveToGoogleForm(r: RsvpInput, sessionTitles: string[]): Promise<boolean> {
   try {
-    const res = await fetch(FORM_URL, {
-      method: "POST",
-      body: form,
-      redirect: "manual",
-      signal: AbortSignal.timeout(10_000),
-    });
-    return res.ok || (res.status >= 300 && res.status < 400);
+    // The sessions question may be checkboxes (one value per box) or a text
+    // field (Google rejects repeated values there), so fall back to one line.
+    const status = await postToGoogleForm(r, sessionTitles);
+    if (status === 200) return true;
+    if (status === 400 && sessionTitles.length > 1) {
+      return (await postToGoogleForm(r, [sessionTitles.join(", ")])) === 200;
+    }
+    return false;
   } catch (err) {
     console.error("RSVP: Google Form submission failed", err);
     return false;
