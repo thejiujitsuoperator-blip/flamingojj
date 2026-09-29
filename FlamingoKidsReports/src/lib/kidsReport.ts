@@ -31,8 +31,8 @@ export interface Observation {
 /** Everything that is printed on the report card (and shared with parents). */
 export interface ReportCard {
   name: string;
-  group: string; // "cub", "junior"…
-  batch: string; // "weekday batch"
+  group: string; // one of GROUPS
+  batch: string; // one of BATCHES
   period: string; // "JAN – AUG 2026"
   photo: string; // data URL, "" for none
   superpowers: Superpower[];
@@ -50,6 +50,8 @@ export interface Kid {
   observations: Observation[];
   /** Raw assessment scores imported from the "Kids Evaluation" sheet. */
   evaluation: Record<string, string>;
+  /** Short parent-link id (/r/<id>); re-sharing updates the same link. */
+  shareId?: string;
   updatedAt: string;
 }
 
@@ -61,6 +63,19 @@ export interface Workspace {
 }
 
 // ── PRESETS ──
+export const GROUPS = ["Cub", "Junior", "Youth"];
+export const BATCHES = ["Weekday batch", "Weekend batch"];
+
+/** Maps free-typed or older values ("cub", "weekday batch") onto the fixed lists. */
+function pick(options: string[], value: string): string {
+  const v = value.trim().toLowerCase();
+  return options.find((o) => o.toLowerCase() === v || o.toLowerCase().startsWith(v.split(" ")[0] || "-")) ?? options[0];
+}
+
+export function normalizeReport(r: ReportCard): ReportCard {
+  return { ...r, group: pick(GROUPS, r.group ?? ""), batch: pick(BATCHES, r.batch ?? "") };
+}
+
 export const DEFAULT_TRAITS = [
   "Following Instructions",
   "Movement",
@@ -108,8 +123,8 @@ export function uid(): string {
 export function blankReport(name: string, ws: Pick<Workspace, "period" | "traitNames">): ReportCard {
   return {
     name,
-    group: "cub",
-    batch: "weekday batch",
+    group: "Cub",
+    batch: "Weekday batch",
     period: ws.period,
     photo: "",
     superpowers: SUPERPOWER_PRESETS.slice(0, 4).map((s) => ({ ...s })),
@@ -138,8 +153,8 @@ export function firstName(name: string): string {
 /** The sample report from the template, used for the demo kid. */
 export const SAMPLE_REPORT: ReportCard = {
   name: "Musab",
-  group: "cub",
-  batch: "weekday batch",
+  group: "Cub",
+  batch: "Weekday batch",
   period: "JAN – AUG 2026",
   photo: "",
   superpowers: SUPERPOWER_PRESETS.slice(0, 4).map((s) => ({ ...s })),
@@ -185,7 +200,9 @@ export function loadWorkspace(): Workspace {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const ws = JSON.parse(raw) as Workspace;
-      if (ws && ws.version === 1 && Array.isArray(ws.kids)) return ws;
+      if (ws && ws.version === 1 && Array.isArray(ws.kids)) {
+        return { ...ws, kids: ws.kids.map((k) => ({ ...k, report: normalizeReport(k.report) })) };
+      }
     }
   } catch {
     /* fall through to demo data */

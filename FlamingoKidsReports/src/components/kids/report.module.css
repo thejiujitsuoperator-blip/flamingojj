@@ -87,6 +87,7 @@
   text-align: right;
 }
 .group {
+  text-transform: lowercase; /* the template prints "cub", "weekday batch" */
   font-family: var(--kr-round), "Fredoka", sans-serif;
   font-weight: 600;
   font-size: 27px;
@@ -102,6 +103,7 @@
   overflow: hidden;
 }
 .batch {
+  text-transform: lowercase;
   font-family: var(--kr-round), "Fredoka", sans-serif;
   font-weight: 600;
   font-size: 28px;

@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ScaledReport from "@/components/kids/ScaledReport";
 import {
   BADGE_PRESETS,
+  BATCHES,
+  GROUPS,
   SUPERPOWER_PRESETS,
   TRAIT_LEVELS,
   columnMaxima,
@@ -151,15 +153,25 @@ export default function CoachWorkspace() {
   async function copyLink(openWhatsApp: boolean) {
     if (!kid) return;
     setBusy(true);
+    // Safari only allows window.open straight after the click, so open first.
+    const win = openWhatsApp ? window.open("", "_blank") : null;
     try {
-      const link = await shareLink(kid.report);
+      const { link, id, fallback } = await shareLink(kid.report, kid.shareId);
+      if (id && id !== kid.shareId) updateKid(kid.id, (x) => ({ ...x, shareId: id }));
       if (openWhatsApp) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(whatsappText(kid.report, link))}`, "_blank");
+        const url = `https://wa.me/?text=${encodeURIComponent(whatsappText(kid.report, link))}`;
+        if (win) win.location.href = url;
+        else window.location.assign(url);
       } else {
         await navigator.clipboard.writeText(link);
-        setToast("Parent link copied — paste it into WhatsApp or email");
+        setToast(
+          fallback
+            ? "Link copied (long version — short links need Vercel Blob, see README)"
+            : "Parent link copied — paste it into WhatsApp or email",
+        );
       }
     } catch {
+      win?.close();
       setToast("Couldn't create the link");
     } finally {
       setBusy(false);
@@ -297,30 +309,27 @@ export default function CoachWorkspace() {
                     </div>
                     <div className={k.field}>
                       <label>Group</label>
-                      <input
-                        className={k.input}
-                        list="kr-groups"
+                      <select
+                        className={k.select}
                         value={kid.report.group}
                         onChange={(e) => updateReport({ group: e.target.value })}
-                      />
-                      <datalist id="kr-groups">
-                        <option value="cub" />
-                        <option value="junior" />
-                        <option value="teen" />
-                      </datalist>
+                      >
+                        {GROUPS.map((g) => (
+                          <option key={g}>{g}</option>
+                        ))}
+                      </select>
                     </div>
                     <div className={k.field}>
                       <label>Batch</label>
-                      <input
-                        className={k.input}
-                        list="kr-batches"
+                      <select
+                        className={k.select}
                         value={kid.report.batch}
                         onChange={(e) => updateReport({ batch: e.target.value })}
-                      />
-                      <datalist id="kr-batches">
-                        <option value="weekday batch" />
-                        <option value="weekend batch" />
-                      </datalist>
+                      >
+                        {BATCHES.map((b) => (
+                          <option key={b}>{b}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div className={k.field}>
