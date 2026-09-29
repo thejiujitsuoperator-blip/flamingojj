@@ -26,6 +26,13 @@ function useRsvpUrl(): string {
   );
 }
 
+// False until React has taken over the page. Before that, tapping Submit on a
+// slow phone would do a plain browser form submit (a page reload) and send
+// nothing, so the button stays disabled.
+function useHydrated(): boolean {
+  return useSyncExternalStore(noSubscribe, () => true, () => false);
+}
+
 type WhatsAppStatus = "sent" | "failed" | "not_configured";
 
 function ChatIcon({ stroke }: { stroke: string }) {
@@ -91,6 +98,7 @@ export default function CommunityRsvp() {
   }
 
   const rsvpUrl = useRsvpUrl();
+  const hydrated = useHydrated();
   const invite = rsvpUrl ? `${INVITE_BASE}\n\nRSVP here (takes 30 seconds): ${rsvpUrl}` : INVITE_BASE;
   const previewMessage = note ? `${note}\n\n${invite}` : invite;
   const whatsappShareLink = `https://wa.me/?text=${encodeURIComponent(previewMessage)}`;
@@ -196,8 +204,8 @@ export default function CommunityRsvp() {
               </div>
 
               <div className={s.field} style={{ gap: 10, alignItems: "flex-start" }}>
-                <button type="submit" className={s.primaryBtn} disabled={submitting}>
-                  {submitting ? "Sending…" : "Submit RSVP"}
+                <button type="submit" className={s.primaryBtn} disabled={submitting || !hydrated}>
+                  {!hydrated ? "Loading…" : submitting ? "Sending…" : "Submit RSVP"}
                 </button>
                 {submitError && <div role="alert" className={s.error}>{submitError}</div>}
                 <div className={s.hint}>We&apos;ll send your confirmation on WhatsApp and only use your number to reach you about Community Day.</div>
