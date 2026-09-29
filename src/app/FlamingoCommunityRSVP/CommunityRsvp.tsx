@@ -287,7 +287,7 @@ export default function CommunityRsvp() {
       <footer className={s.section} style={{ paddingTop: 56, textAlign: "center" }}>
         <div className={s.rule} />
         <div className={s.footTitle}>See you on the mat, Oct 11.</div>
-        <div className={s.hint} style={{ fontSize: 13, marginBottom: 20 }}>Doors open 9:45am</div>
+        <div className={s.hint} style={{ fontSize: 13, marginBottom: 20 }}>Door opens 9:45am</div>
         <a href="https://maps.app.goo.gl/Tkn43vwU8J89QMBD6" target="_blank" rel="noopener noreferrer" className={s.directions}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2724" strokeWidth="2" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z" /><circle cx="12" cy="10" r="3" /></svg>
           Get Directions to Flamingo
