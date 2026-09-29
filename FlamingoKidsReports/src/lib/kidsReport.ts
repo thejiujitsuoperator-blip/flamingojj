@@ -50,6 +50,8 @@ export interface Kid {
   observations: Observation[];
   /** Raw assessment scores imported from the "Kids Evaluation" sheet. */
   evaluation: Record<string, string>;
+  /** Ids of observations that were deleted (so a merge doesn't bring them back). */
+  removedObs?: string[];
   /** Short parent-link id (/r/<id>); re-sharing updates the same link. */
   shareId?: string;
   updatedAt: string;
@@ -117,7 +119,8 @@ export function currentPeriod(d = new Date()): string {
 }
 
 export function uid(): string {
-  return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+  const bytes = crypto.getRandomValues(new Uint8Array(12));
+  return Array.from(bytes, (b) => (b % 36).toString(36)).join("");
 }
 
 export function blankReport(name: string, ws: Pick<Workspace, "period" | "traitNames">): ReportCard {

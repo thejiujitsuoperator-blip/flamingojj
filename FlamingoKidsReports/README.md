@@ -13,7 +13,7 @@ its own Vercel project with **Root Directory = `FlamingoKidsReports`**.
 
 | Path | Who | What |
 | --- | --- | --- |
-| `/` | Coaches | Workspace: kid list, observations, evaluation, report editor + live preview |
+| `/` | Coaches (passcode) | Workspace: kid list, observations, evaluation, report editor + live preview |
 | `/r/<id>` | Parents | Short link to a shared report, with Save image / Share / Print buttons |
 | `/view#r=…` | Parents | Same view for the long self-contained link (used when short links aren't set up) |
 
@@ -43,8 +43,36 @@ npm run dev
   *Copy parent link* / *WhatsApp*. Parent links are short,
   e.g. `…/r/Qx2XBfKk`. Each kid keeps one link: sharing again after edits
   updates what that link shows.
-- **Storage**: this browser's localStorage. Use **Backup** / **Restore**
-  (a JSON file) to move data between devices.
+- **Storage**: saved on the server (Vercel Blob), shared by every coach who
+  signs in. See *Coach sign-in & cloud saving* below.
+
+## Coach sign-in & cloud saving
+
+Coaches sign in with one shared passcode (`COACH_PASSCODE`). Everything they
+enter is saved to the Blob store, so it's the same on every device and
+survives app updates:
+
+- `workspace/settings.json`: report period and trait list.
+- `workspace/kids/<id>.json`: one file per kid (report, observations,
+  evaluation). Coaches editing different kids never overwrite each other. If
+  two coaches edit the same kid, the last save wins for the report text, but
+  observations are merged so nobody's notes are lost.
+
+Changes save about a second after typing stops. The badge next to the title
+shows *Saving…*, *✓ All changes saved* or *Not saved yet — retrying*. Unsaved
+edits are also kept in the browser and sent on the next visit if the
+connection drops. Other coaches' changes appear within about 45 seconds, or
+when the tab regains focus.
+
+The first time a coach signs in on a browser that already has data from
+before cloud saving, the app offers to upload it. **Backup** still downloads
+everything as a JSON file. **Restore** adds or replaces the kids from a
+backup and never deletes others.
+
+Without `COACH_PASSCODE` (or without a Blob store) the app falls back to
+browser-only storage and says so in a banner.
+
+Changing `COACH_PASSCODE` signs every device out.
 
 ## Short links (Vercel Blob)
 
@@ -55,7 +83,8 @@ choose **Private** access and connect it to the project. That adds
 
 | Variable | Notes |
 | --- | --- |
-| `BLOB_READ_WRITE_TOKEN` | Added automatically when the Blob store is connected |
+| `COACH_PASSCODE` | Shared coach passcode. Required for sign-in and cloud saving. Once set, only signed-in coaches can create parent links |
+| `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` | Added automatically when the Blob store is connected |
 | `BLOB_ACCESS` | `private` (default) or `public`, matching how the store was created |
 | `SHARE_DIR` | Optional: store shared reports in this folder instead (local dev / self-hosting) |
 
@@ -69,7 +98,13 @@ src/app/page.tsx, CoachWorkspace.tsx   Coach workspace
 src/app/view/                          Parent view (long #fragment links)
 src/app/r/[id]/                        Parent view for short links
 src/app/api/share/route.ts             Saves a report, returns its short id
-src/lib/shareStore.ts                  Blob (or SHARE_DIR) storage
+src/app/useWorkspaceSync.ts            Client autosave / refresh / sign-in state
+src/app/api/login, api/logout          Coach session cookie
+src/app/api/workspace/                 Settings + per-kid load/save/delete
+src/lib/auth.ts                        Passcode check + session cookie
+src/lib/workspaceStore.ts              Workspace documents + observation merge
+src/lib/shareStore.ts                  Shared parent reports
+src/lib/storage.ts                     Blob (or SHARE_DIR) JSON storage
 src/app/kr.module.css                  Workspace + viewer styles
 src/components/kids/                   Report card, scaling wrapper, fonts
 src/lib/kidsReport.ts                  Types, presets, CSV import, share-link encoding

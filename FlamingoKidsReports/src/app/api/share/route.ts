@@ -1,4 +1,6 @@
-import { isShareId, newShareId, saveReport, storeConfigured } from "@/lib/shareStore";
+import { isCoach, passcodeConfigured } from "@/lib/auth";
+import { isShareId, newShareId, saveReport } from "@/lib/shareStore";
+import { storeConfigured } from "@/lib/storage";
 import type { ReportCard } from "@/lib/kidsReport";
 
 const MAX_BYTES = 1_000_000;
@@ -22,6 +24,10 @@ function looksLikeReport(r: unknown): r is ReportCard {
  * that report in place, so a parent's link always shows the latest version.
  */
 export async function POST(request: Request) {
+  // Once a coach passcode is set, only signed-in coaches can publish reports.
+  if (passcodeConfigured() && !(await isCoach())) {
+    return Response.json({ error: "unauthorized" }, { status: 401 });
+  }
   if (!storeConfigured()) {
     console.error("[share] no storage: connect a Vercel Blob store (BLOB_READ_WRITE_TOKEN or BLOB_STORE_ID) and redeploy");
     return Response.json({ error: "not-configured" }, { status: 503 });

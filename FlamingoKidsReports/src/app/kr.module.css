@@ -453,6 +453,57 @@
   top: 74px;
 }
 
+/* ── SYNC ── */
+.syncBadge {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.sync_saved {
+  background: #dff1ee;
+  color: #1d5e5a;
+}
+.sync_saving {
+  background: #fdf1d6;
+  color: #7a5a12;
+}
+.sync_error {
+  background: #fbe0dc;
+  color: #a33222;
+}
+.sync_local {
+  background: #eee7db;
+  color: #645c50;
+}
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 20px 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fdf1d6;
+  border: 1px solid #f0dca6;
+  font-size: 14px;
+}
+.signIn {
+  max-width: 340px;
+  margin: 12vh auto 0;
+  padding: 28px 24px;
+  background: #fff;
+  border: 1px solid #e3dccb;
+  border-radius: 20px;
+  text-align: center;
+}
+.error {
+  color: #a33222;
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
 @media print {
   @page {
     size: A4;

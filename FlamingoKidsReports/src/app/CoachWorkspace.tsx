@@ -12,12 +12,10 @@ import {
   columnMaxima,
   emptyWorkspace,
   firstName,
-  loadWorkspace,
   newKid,
   parseCsv,
   readEvaluation,
   resizePhoto,
-  saveWorkspace,
   suggestTraitLevels,
   uid,
   type Kid,
@@ -28,6 +26,7 @@ import {
 } from "@/lib/kidsReport";
 import { downloadBlob, reportFileName, reportPng, shareLink, whatsappText } from "@/lib/kidsExport";
 import k from "./kr.module.css";
+import { useWorkspaceSync } from "./useWorkspaceSync";
 
 type Tab = "notes" | "eval" | "report";
 type TextField = "journey" | "nextLevel" | "coachNote";
@@ -58,7 +57,8 @@ function todayIso() {
 }
 
 export default function CoachWorkspace() {
-  const [ws, setWs] = useState<Workspace | null>(null);
+  const sync = useWorkspaceSync();
+  const { ws, setWs } = sync;
   const [selId, setSelId] = useState<string>("");
   const [tab, setTab] = useState<Tab>("report");
   const [query, setQuery] = useState("");
@@ -67,19 +67,13 @@ export default function CoachWorkspace() {
   const [dialog, setDialog] = useState<"" | "import" | "traits">("");
   const preview = useRef<HTMLDivElement>(null);
 
-  // Load once on the client (localStorage), then save on every change.
+  // Select the first kid once data arrives (or when the selected one goes away).
   useEffect(() => {
-    const loaded = loadWorkspace();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setWs(loaded);
-    setSelId(loaded.kids[0]?.id ?? "");
-  }, []);
-  useEffect(() => {
-    if (!ws) return;
-    const err = saveWorkspace(ws);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (err) setToast(`Not saved: ${err}. Try a smaller photo, or download a backup.`);
-  }, [ws]);
+    if (ws && !ws.kids.some((x) => x.id === selId)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelId([...ws.kids].sort((a, b) => a.report.name.localeCompare(b.report.name))[0]?.id ?? "");
+    }
+  }, [ws, selId]);
   useEffect(() => {
     if (!toast) return;
     const t = setTimeout(() => setToast(""), 3200);
@@ -95,7 +89,14 @@ export default function CoachWorkspace() {
     [ws, query],
   );
 
-  if (!ws) return <div className={k.ws} />;
+  if (sync.mode === "login") return <SignIn onSubmit={sync.login} />;
+  if (!ws || sync.mode === "loading") {
+    return (
+      <div className={k.ws}>
+        <p className={k.message}>Loading…</p>
+      </div>
+    );
+  }
 
   // ── state helpers ──
   const updateKid = (id: string, fn: (kid: Kid) => Kid) =>
@@ -189,9 +190,23 @@ export default function CoachWorkspace() {
       try {
         const data = JSON.parse(t) as Workspace;
         if (data.version !== 1 || !Array.isArray(data.kids)) throw new Error();
-        if (!confirm(`Replace everything here with the backup (${data.kids.length} kids)?`)) return;
-        setWs(data);
-        setSelId(data.kids[0]?.id ?? "");
+        const clash = data.kids.filter((x) => ws?.kids.some((y) => y.id === x.id)).length;
+        const msg =
+          `Restore ${data.kids.length} kids from this backup?` +
+          (clash ? ` ${clash} already here will be replaced by the backup's version.` : "") +
+          " Kids not in the backup are kept.";
+        if (!confirm(msg)) return;
+        const ids = new Set(data.kids.map((x) => x.id));
+        setWs((w) =>
+          w
+            ? {
+                ...w,
+                period: data.period ?? w.period,
+                traitNames: data.traitNames ?? w.traitNames,
+                kids: [...w.kids.filter((x) => !ids.has(x.id)), ...data.kids],
+              }
+            : w,
+        );
         setToast("Backup restored");
       } catch {
         setToast("That file isn't a kids-reports backup");
@@ -207,6 +222,7 @@ export default function CoachWorkspace() {
           <img src="/flamingo-icon-teal.png" alt="" />
           Flamingo Kids Reports
         </Link>
+        <SyncBadge status={sync.status} />
         <div className={k.grow} />
         <label className={k.label} style={{ margin: 0 }}>
           Report period&nbsp;
@@ -230,7 +246,28 @@ export default function CoachWorkspace() {
           Restore
           <input type="file" accept="application/json" hidden onChange={(e) => restore(e.target.files?.[0])} />
         </label>
+        {sync.mode === "server" && (
+          <button className={k.btn} onClick={() => confirm("Sign out on this device?") && sync.logout()}>
+            Sign out
+          </button>
+        )}
       </header>
+      {sync.mode === "local" && sync.localReason && (
+        <div className={`${k.banner} ${k.noPrint}`}>
+          {sync.localReason} Use <b>Backup</b> regularly.
+        </div>
+      )}
+      {sync.localOffer && (
+        <div className={`${k.banner} ${k.noPrint}`}>
+          This browser has {sync.localOffer.kids.length} kids saved from before cloud saving was switched on.
+          <button className={`${k.btn} ${k.small} ${k.primary}`} onClick={sync.acceptLocalOffer}>
+            Upload them
+          </button>
+          <button className={`${k.btn} ${k.small}`} onClick={sync.dismissLocalOffer}>
+            Not now
+          </button>
+        </div>
+      )}
 
       <div className={k.layout}>
         {/* ── KIDS ── */}
@@ -619,7 +656,11 @@ function Observations({
                 className={k.linkBtn}
                 onClick={() =>
                   confirm("Delete this observation?") &&
-                  updateKid(kid.id, (x) => ({ ...x, observations: x.observations.filter((y) => y.id !== o.id) }))
+                  updateKid(kid.id, (x) => ({
+                    ...x,
+                    observations: x.observations.filter((y) => y.id !== o.id),
+                    removedObs: [...(x.removedObs ?? []), o.id],
+                  }))
                 }
               >
                 delete
@@ -826,6 +867,59 @@ function TraitsDialog({
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+// ── SAVE STATUS ──
+function SyncBadge({ status }: { status: "local" | "saved" | "saving" | "error" }) {
+  const label = {
+    local: "Saved on this device only",
+    saved: "✓ All changes saved",
+    saving: "Saving…",
+    error: "Not saved yet — retrying",
+  }[status];
+  return <span className={`${k.syncBadge} ${k[`sync_${status}`]}`}>{label}</span>;
+}
+
+// ── SIGN IN ──
+function SignIn({ onSubmit }: { onSubmit: (passcode: string) => Promise<boolean> }) {
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  return (
+    <div className={k.ws}>
+      <form
+        className={k.signIn}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setBusy(true);
+          setError("");
+          const ok = await onSubmit(code);
+          setBusy(false);
+          if (!ok) setError("That passcode didn't work.");
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/flamingo-icon-teal.png" alt="" width={72} height={62} />
+        <h1 className={k.panelTitle} style={{ justifyContent: "center" }}>
+          Flamingo Kids Reports
+        </h1>
+        <p className={k.hint}>Coaches only. Enter the coach passcode.</p>
+        <input
+          className={k.input}
+          type="password"
+          autoFocus
+          autoComplete="current-password"
+          placeholder="Passcode"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
+        {error && <p className={k.error}>{error}</p>}
+        <button className={`${k.btn} ${k.primary}`} disabled={busy || !code} style={{ marginTop: 12 }}>
+          {busy ? "Checking…" : "Sign in"}
+        </button>
+      </form>
     </div>
   );
 }
