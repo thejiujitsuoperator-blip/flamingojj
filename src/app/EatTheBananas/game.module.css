@@ -1,0 +1,82 @@
+/* Soft, low-saturation palette — calm for small eyes. */
+.stage {
+  --bg: #e8e3d7;
+  --hill: #cdd0bd;
+  --banana: #dcca92;
+  --banana-edge: #b19f6c;
+  --stem: #7c6b53;
+  --fur: #8f7a64;
+  --face: #dcccb3;
+  --cheek: #cfae98;
+  --ink: #3e362d;
+  --hint: #a39c8d;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hint {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--hint);
+}
+
+.scene {
+  width: min(100vw, 125vh);
+  height: auto;
+  max-height: 100vh;
+  overflow: visible;
+}
+
+.hill { fill: var(--hill); }
+.banana { fill: var(--banana); stroke: var(--banana-edge); stroke-width: 3; stroke-linejoin: round; }
+.stem { fill: var(--stem); }
+.fur { fill: var(--fur); }
+.face { fill: var(--face); }
+.cheek { fill: var(--cheek); opacity: 0.6; }
+.eye { fill: var(--ink); }
+.line { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; }
+.mouth { fill: var(--ink); }
+
+.chew {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: chew 160ms ease-in-out infinite alternate;
+}
+@keyframes chew {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0.35); }
+}
+
+.sway {
+  animation: sway 3s ease-in-out infinite alternate;
+}
+@keyframes sway {
+  from { transform: rotate(-3deg); }
+  to { transform: rotate(3deg); }
+}
+
+.bounce {
+  animation: bounce 400ms ease-in-out 4 alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-18px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sway, .bounce, .chew { animation: none; }
+}
