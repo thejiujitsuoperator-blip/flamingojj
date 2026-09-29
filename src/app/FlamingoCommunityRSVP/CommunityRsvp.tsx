@@ -115,8 +115,8 @@ export default function CommunityRsvp() {
           <circle cx="600" cy="180" r="100" fill="#FDD9EC" />
         </svg>
         <div style={{ position: "relative", zIndex: 1 }}>
-          <h1 className={s.heroTitle}>You&apos;re part of the family —<br />come celebrate with us.</h1>
-          <p className={s.heroLede}>One day, one mat, one community. Kids and adults competing, coaches and athletes mingling, and everyone welcome — whether you&apos;ve been training for years or you&apos;re just curious what jiu-jitsu is about.</p>
+          <h1 className={s.heroTitle}>Flamingo turns 4 —<br />celebrate with us.</h1>
+          <p className={s.heroLede}>For four years we&apos;ve been making jiu-jitsu a regular part of life for adults and kids — competing, challenging ourselves, creating merch we love and, above all, building a community. On Oct 11 we&apos;re showcasing all of it. It&apos;s the best way to experience everything Flamingo is about.</p>
         </div>
       </section>
 
