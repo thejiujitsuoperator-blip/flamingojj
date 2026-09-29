@@ -18,7 +18,10 @@ const ALPHABET = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const SHARE_DIR = process.env.SHARE_DIR;
 
 export function storeConfigured(): boolean {
-  return !!(SHARE_DIR ||process.env.BLOB_READ_WRITE_TOKEN || (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN));
+  // A connected Blob store sets either BLOB_READ_WRITE_TOKEN or (newer
+  // stores) BLOB_STORE_ID; with the latter, @vercel/blob gets its OIDC token
+  // from the request at call time, so there is no token env var to check.
+  return !!(SHARE_DIR || process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
 }
 
 export function isShareId(id: string): boolean {
