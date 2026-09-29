@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   MAX_GUESTS,
   SESSIONS,
@@ -14,6 +14,17 @@ import s from "./rsvp.module.css";
 
 const INVITE_BASE =
   "You're invited to Flamingo Jiu-Jitsu's Community Day — Sat, Oct 11 @ HSR Layout.\nFree Movement & Self-Defense Workshop at 10am (no experience needed), plus kids & adults competitions, meet & greet, and food all day.\nCome roll with us!";
+
+// The page's own address, so invites point back to wherever it's hosted.
+// Empty during server render; filled in on the client.
+const noSubscribe = () => () => {};
+function useRsvpUrl(): string {
+  return useSyncExternalStore(
+    noSubscribe,
+    () => window.location.origin + window.location.pathname,
+    () => "",
+  );
+}
 
 type WhatsAppStatus = "sent" | "failed" | "not_configured";
 
@@ -79,7 +90,9 @@ export default function CommunityRsvp() {
     }
   }
 
-  const previewMessage = note ? `${note}\n\n${INVITE_BASE}` : INVITE_BASE;
+  const rsvpUrl = useRsvpUrl();
+  const invite = rsvpUrl ? `${INVITE_BASE}\n\nRSVP here (takes 30 seconds): ${rsvpUrl}` : INVITE_BASE;
+  const previewMessage = note ? `${note}\n\n${invite}` : invite;
   const whatsappShareLink = `https://wa.me/?text=${encodeURIComponent(previewMessage)}`;
 
   return (
