@@ -40,8 +40,35 @@ export async function sharePng(blob: Blob, r: ReportCard): Promise<boolean> {
   return false;
 }
 
+export interface SharedLink {
+  link: string;
+  /** Short id to reuse next time (so the parent's link stays the same). */
+  id?: string;
+  /** True when short links aren't set up and the long link was used. */
+  fallback?: boolean;
+}
+
+/**
+ * Saves the report on the server and returns a short /r/<id> link. Passing
+ * the kid's previous id updates that same link. If the server has no storage
+ * configured, falls back to a self-contained (long) link.
+ */
+export async function shareLink(r: ReportCard, id?: string): Promise<SharedLink> {
+  const res = await fetch("/api/share", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ id, report: r }),
+  });
+  if (res.ok) {
+    const { id: saved } = (await res.json()) as { id: string };
+    return { link: `${window.location.origin}/r/${saved}`, id: saved };
+  }
+  if (res.status === 503) return { link: await longLink(r), fallback: true };
+  throw new Error(`Share failed (${res.status})`);
+}
+
 /** A self-contained link: the whole report lives in the URL fragment. */
-export async function shareLink(r: ReportCard): Promise<string> {
+export async function longLink(r: ReportCard): Promise<string> {
   const compact: ReportCard = { ...r, photo: await shrinkPhoto(r.photo) };
   return `${window.location.origin}/view#r=${await encodeReport(compact)}`;
 }

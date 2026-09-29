@@ -6,14 +6,21 @@ import { decodeReport, firstName, type ReportCard } from "@/lib/kidsReport";
 import { downloadBlob, reportFileName, reportPng, sharePng } from "@/lib/kidsExport";
 import k from "../kr.module.css";
 
-/** What parents open: the report decoded from the link's #fragment. */
-export default function ParentView() {
-  const [report, setReport] = useState<ReportCard | null>(null);
-  const [error, setError] = useState("");
+/**
+ * What parents open. `initial` is the report loaded on the server for a short
+ * /r/<id> link (null when that id doesn't exist); without it the report is
+ * decoded from the link's #fragment.
+ */
+export default function ParentView({ initial }: { initial?: ReportCard | null }) {
+  const [report, setReport] = useState<ReportCard | null>(initial ?? null);
+  const [error, setError] = useState(
+    initial === null ? "We couldn't find this report. Please ask your coach to send the link again." : "",
+  );
   const [busy, setBusy] = useState(false);
   const node = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (initial !== undefined) return;
     const load = () => {
       const data = new URLSearchParams(window.location.hash.slice(1)).get("r");
       if (!data) {
@@ -31,7 +38,7 @@ export default function ParentView() {
     load();
     window.addEventListener("hashchange", load);
     return () => window.removeEventListener("hashchange", load);
-  }, []);
+  }, [initial]);
 
   async function save(share: boolean) {
     if (!node.current || !report) return;
