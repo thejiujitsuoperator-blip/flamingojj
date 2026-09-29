@@ -292,7 +292,7 @@ export default function CommunityRsvp() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2724" strokeWidth="2" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z" /><circle cx="12" cy="10" r="3" /></svg>
           Get Directions to Flamingo
         </a>
-        <div className={s.site}>flamingojiujitsu.com</div>
+        <div className={s.site}><a href="https://www.flamingojiujitsu.com/" target="_blank" rel="noopener noreferrer">flamingojiujitsu.com</a></div>
       </footer>
     </div>
   );
