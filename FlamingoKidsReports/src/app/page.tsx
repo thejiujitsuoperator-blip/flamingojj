@@ -1,5 +1,5 @@
 import CoachWorkspace from "./CoachWorkspace";
 
-export default function KidsReportsPage() {
+export default function Home() {
   return <CoachWorkspace />;
 }

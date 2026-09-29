@@ -13,7 +13,6 @@ import {
   IconTicket,
   IconUsers,
 } from "./icons";
-import Link from "next/link";
 import type { JSX } from "react";
 
 interface NavEntry {
@@ -89,12 +88,6 @@ export default function Sidebar() {
                 </button>
               );
             })}
-            {coach && g.title === "Coach tools" && (
-              <Link className="nav-item" href="/kids-reports" style={{ textDecoration: "none" }}>
-                <IconAward />
-                Kids reports
-              </Link>
-            )}
           </div>
         ))}
       </nav>

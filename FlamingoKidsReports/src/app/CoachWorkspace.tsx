@@ -193,7 +193,7 @@ export default function CoachWorkspace() {
         <Link className={k.brand} href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/flamingo-icon-teal.png" alt="" />
-          Kids reports
+          Flamingo Kids Reports
         </Link>
         <div className={k.grow} />
         <label className={k.label} style={{ margin: 0 }}>

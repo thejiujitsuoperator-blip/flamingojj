@@ -43,7 +43,7 @@ export async function sharePng(blob: Blob, r: ReportCard): Promise<boolean> {
 /** A self-contained link: the whole report lives in the URL fragment. */
 export async function shareLink(r: ReportCard): Promise<string> {
   const compact: ReportCard = { ...r, photo: await shrinkPhoto(r.photo) };
-  return `${window.location.origin}/kids-reports/view#r=${await encodeReport(compact)}`;
+  return `${window.location.origin}/view#r=${await encodeReport(compact)}`;
 }
 
 export function whatsappText(r: ReportCard, link: string): string {
