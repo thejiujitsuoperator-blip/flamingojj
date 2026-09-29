@@ -35,7 +35,7 @@ export function validateRsvp(r: RsvpInput): RsvpErrors {
   const digits = r.phone.replace(/\D/g, "");
   if (digits.length < 10 || digits.length > 15) errors.phone = "Please enter a valid contact number (at least 10 digits).";
   if (!Number.isInteger(r.guests) || r.guests < 0 || r.guests > MAX_GUESTS) errors.guests = "Guests must be between 0 and 10.";
-  if (r.sessions.length === 0) errors.sessions = "Tick at least one session you’ll attend in “How the day flows” below.";
+  if (r.sessions.length === 0) errors.sessions = "Tick at least one session you’ll attend in “How the day flows” above.";
   else if (r.sessions.some((k) => !SESSIONS.some((s) => s.key === k))) errors.sessions = "Unknown session selected.";
   return errors;
 }

@@ -13,7 +13,7 @@ import {
 import s from "./rsvp.module.css";
 
 const INVITE_BASE =
-  "You're invited to Flamingo Jiu-Jitsu's Community Day — Sat, Oct 11 @ HSR Layout.\nFree Movement & Self-Defense Workshop at 10am (no experience needed), plus kids & adults competitions, meet & greet, and food all day.\nCome roll with us!";
+  "You're invited to Flamingo Jiu-Jitsu's Community Day — Sun, Oct 11 @ HSR Layout.\nFree Movement & Self-Defense Workshop at 10am (no experience needed), plus kids & adults competitions, meet & greet, and food all day.\nCome roll with us!";
 
 // The page's own address, so invites point back to wherever it's hosted.
 // Empty during server render; filled in on the client.
@@ -104,14 +104,55 @@ export default function CommunityRsvp() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/flamingo-wordmark.png" alt="Flamingo Jiu-Jitsu" className={s.brandWordmark} />
         </div>
-        <div className={s.datePill}>SAT, OCT 11 · HSR LAYOUT</div>
+        <div className={s.datePill}>SUN, OCT 11 · HSR LAYOUT</div>
       </div>
 
+      {/* hero */}
+      <section className={s.hero}>
+        <svg width="100%" height="220" viewBox="0 0 720 220" className={s.heroBg} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <circle cx="90" cy="60" r="90" fill="#FFF3F9" />
+          <circle cx="640" cy="40" r="70" fill="#FFE1F1" />
+          <circle cx="600" cy="180" r="100" fill="#FDD9EC" />
+        </svg>
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h1 className={s.heroTitle}>You&apos;re part of the family —<br />come celebrate with us.</h1>
+          <p className={s.heroLede}>One day, one mat, one community. Kids and adults competing, coaches and athletes mingling, and everyone welcome — whether you&apos;ve been training for years or you&apos;re just curious what jiu-jitsu is about.</p>
+        </div>
+      </section>
+
+      {/* timeline */}
+      <section id="timeline" className={s.section} style={{ paddingTop: 56 }}>
+        <h2 className={s.sectionTitle}>How the day flows</h2>
+        <p className={s.sectionLede}>Tick the sessions you&apos;ll attend — drop in for one part or stay all day, nothing is mandatory.</p>
+        <div>
+          {SESSIONS.map((d) => {
+            const on = selected.includes(d.key);
+            return (
+              <div key={d.key} className={s.stop}>
+                <div className={s.rail}>
+                  <div className={s.dot} style={{ background: d.highlight ? "#FF87C9" : "#FBD6E7" }} />
+                  <div className={s.line} />
+                </div>
+                <div style={{ paddingBottom: 28 }}>
+                  <div className={s.stopTime}>{d.time}</div>
+                  <div className={s.stopTitle}>{d.title}</div>
+                  <div className={s.stopDesc}>{d.desc}</div>
+                  <label htmlFor={`session-${d.key}`} className={`${s.attend} ${on ? s.attendOn : ""}`} style={{ cursor: locked ? "default" : "pointer" }}>
+                    <input id={`session-${d.key}`} type="checkbox" checked={on} disabled={locked} onChange={() => toggleSession(d.key)} />
+                    I&apos;m attending
+                  </label>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
       {/* primary CTA: RSVP */}
-      <section id="rsvp" className={s.section} style={{ paddingTop: 24 }}>
+      <section id="rsvp" className={s.section} style={{ paddingTop: 16 }}>
         <div className={s.card}>
           <div className={s.tag}>RSVP — TAKES 30 SECONDS</div>
-          <h1 className={s.cardTitle}>Are you coming?</h1>
+          <h2 className={s.cardTitle}>Are you coming?</h2>
           <p className={s.cardLede}>Let us know so we can plan the mats, the merch and the food.</p>
 
           {!submitted ? (
@@ -149,7 +190,7 @@ export default function CommunityRsvp() {
                 <div className={s.label}>Sessions you&apos;re attending</div>
                 <div className={s.muted}>
                   {count === 0 ? "None selected yet" : `${sessionsText(count)} selected`} ·{" "}
-                  <a href="#timeline" className={s.strongLink}>Choose in “How the day flows” ↓</a>
+                  <a href="#timeline" className={s.strongLink}>Choose in “How the day flows” ↑</a>
                 </div>
                 {errors.sessions && <div role="alert" className={s.error}>{errors.sessions}</div>}
               </div>
@@ -176,54 +217,13 @@ export default function CommunityRsvp() {
         </div>
       </section>
 
-      {/* hero */}
-      <section className={s.hero}>
-        <svg width="100%" height="220" viewBox="0 0 720 220" className={s.heroBg} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <circle cx="90" cy="60" r="90" fill="#FFF3F9" />
-          <circle cx="640" cy="40" r="70" fill="#FFE1F1" />
-          <circle cx="600" cy="180" r="100" fill="#FDD9EC" />
-        </svg>
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <h2 className={s.heroTitle}>You&apos;re part of the family —<br />come celebrate with us.</h2>
-          <p className={s.heroLede}>One day, one mat, one community. Kids and adults competing, coaches and athletes mingling, and everyone welcome — whether you&apos;ve been training for years or you&apos;re just curious what jiu-jitsu is about.</p>
-        </div>
-      </section>
-
-      {/* timeline */}
-      <section id="timeline" className={s.section} style={{ paddingTop: 56 }}>
-        <h2 className={s.sectionTitle}>How the day flows</h2>
-        <p className={s.sectionLede}>Tick the sessions you&apos;ll attend — drop in for one part or stay all day, nothing is mandatory.</p>
-        <div>
-          {SESSIONS.map((d) => {
-            const on = selected.includes(d.key);
-            return (
-              <div key={d.key} className={s.stop}>
-                <div className={s.rail}>
-                  <div className={s.dot} style={{ background: d.highlight ? "#FF87C9" : "#FBD6E7" }} />
-                  <div className={s.line} />
-                </div>
-                <div style={{ paddingBottom: 28 }}>
-                  <div className={s.stopTime}>{d.time}</div>
-                  <div className={s.stopTitle}>{d.title}</div>
-                  <div className={s.stopDesc}>{d.desc}</div>
-                  <label htmlFor={`session-${d.key}`} className={`${s.attend} ${on ? s.attendOn : ""}`} style={{ cursor: locked ? "default" : "pointer" }}>
-                    <input id={`session-${d.key}`} type="checkbox" checked={on} disabled={locked} onChange={() => toggleSession(d.key)} />
-                    I&apos;m attending
-                  </label>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
       {/* invite composer */}
       <section id="invite" className={s.section} style={{ paddingTop: 40 }}>
         <h2 className={s.sectionTitle}>Bring someone along</h2>
         <p className={s.sectionLede} style={{ marginBottom: 20 }}>Add a personal note and share an invite on WhatsApp — a message from you means a lot more than a flyer.</p>
         <div className={s.invite}>
           <label htmlFor="note" className={s.label}>Your personal note (optional)</label>
-          <textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Hey! You always said you wanted to try this — come with me on Saturday?" className={s.textarea} />
+          <textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Hey! You always said you wanted to try this — come with me on Sunday?" className={s.textarea} />
           <div className={s.preview}>{previewMessage}</div>
           <a href={whatsappShareLink} target="_blank" rel="noopener noreferrer" className={s.primaryBtn} style={{ alignSelf: "flex-start" }}>
             <ChatIcon stroke="#FBF6F3" />
@@ -287,7 +287,7 @@ export default function CommunityRsvp() {
       <footer className={s.section} style={{ paddingTop: 56, textAlign: "center" }}>
         <div className={s.rule} />
         <div className={s.footTitle}>See you on the mat, Oct 11.</div>
-        <div className={s.hint} style={{ fontSize: 13, marginBottom: 20 }}>9:45am doors open</div>
+        <div className={s.hint} style={{ fontSize: 13, marginBottom: 20 }}>Doors open 9:45am</div>
         <a href="https://maps.app.goo.gl/Tkn43vwU8J89QMBD6" target="_blank" rel="noopener noreferrer" className={s.directions}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2724" strokeWidth="2" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z" /><circle cx="12" cy="10" r="3" /></svg>
           Get Directions to Flamingo

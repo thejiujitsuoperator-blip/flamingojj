@@ -19,7 +19,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "RSVP · Flamingo Jiu-Jitsu Community Day",
   description:
-    "Sat, Oct 11 @ HSR Layout — free movement & self-defense workshop, kids & adults competitions, meet & greet. RSVP in 30 seconds.",
+    "Sun, Oct 11 @ HSR Layout — free movement & self-defense workshop, kids & adults competitions, meet & greet. RSVP in 30 seconds.",
 };
 
 export default function FlamingoCommunityRsvpPage() {

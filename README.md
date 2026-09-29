@@ -64,7 +64,7 @@ create a new session with a future date.
 
 ## Community Day RSVP — `/FlamingoCommunityRSVP`
 
-Public RSVP page for Flamingo Jiu-Jitsu Community Day (Sat, Oct 11), ported from
+Public RSVP page for Flamingo Jiu-Jitsu Community Day (Sun, Oct 11), ported from
 the Claude design canvas. Files: `src/app/FlamingoCommunityRSVP/`,
 `src/app/api/rsvp/route.ts`, `src/lib/rsvp.ts`.
 
@@ -99,7 +99,7 @@ templates, category **Utility**, name `rsvp_confirmation`, language English,
 with two body variables:
 
 ```
-Hi {{1}}, you're RSVP'd for Flamingo Jiu-Jitsu Community Day on Sat, Oct 11 at HSR Layout ({{2}}). Doors open at 9:45am. Directions: https://maps.app.goo.gl/Tkn43vwU8J89QMBD6. See you on the mat!
+Hi {{1}}, you're RSVP'd for Flamingo Jiu-Jitsu Community Day on Sun, Oct 11 at HSR Layout ({{2}}). Doors open at 9:45am. Directions: https://maps.app.goo.gl/Tkn43vwU8J89QMBD6. See you on the mat!
 ```
 
 `{{1}}` is the attendee's first name and `{{2}}` is a summary such as
