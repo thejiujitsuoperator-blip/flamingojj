@@ -9,7 +9,7 @@ export interface SessionDef {
 }
 
 export const SESSIONS: SessionDef[] = [
-  { key: "workshop", time: "10:00 AM", title: "Free Workshop", desc: "Hands-on movement & martial arts session — two self-defense scenarios we train at Flamingo. Open to anyone, no experience needed.", highlight: true },
+  { key: "workshop", time: "10:00 AM", title: "Free Workshop", desc: "Hands-on movement & martial arts session for complete beginners — two self-defense scenarios we train at Flamingo. Open to anyone, no experience needed.", highlight: true },
   { key: "kidsComp", time: "10:45 AM", title: "Kids in-house competition", desc: "Our young athletes compete in front of family and friends.", highlight: false },
   { key: "adultsComp", time: "11:15 AM", title: "Adults in-house competition", desc: "Adult brackets kick off across the mats.", highlight: false },
   { key: "kidsFinals", time: "11:45 AM", title: "Kids finals & grading", desc: "Finals matches and belt grading for the kids program.", highlight: false },
