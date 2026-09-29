@@ -104,3 +104,30 @@ Hi {{1}}, you're RSVP'd for Flamingo Jiu-Jitsu Community Day on Sun, Oct 11 at H
 
 `{{1}}` is the attendee's first name and `{{2}}` is a summary such as
 `You + 2 guests · Free Workshop, Meet & greet`.
+
+## Kids progress reports — `/kids-reports`
+
+Coach workspace for the "My Jiu-Jitsu Journey" report card (the Jan–Aug
+template). Files: `src/app/kids-reports/`, `src/components/kids/`,
+`src/lib/kidsReport.ts`, `src/lib/kidsExport.ts`.
+
+- **Observations**: dated notes per kid after each class. One click appends a
+  note to the journey, next-level or coach's-note text.
+- **Evaluation**: import the *Kids Evaluation* tab (File → Download → CSV, or
+  copy and paste the cells). Kids are matched by name and new names are added.
+  Items whose names match a trait (e.g. "Focus") suggest a 🌱/🌿/🌳 level;
+  numbers are scaled against the highest score in that column. Tick "Kids are
+  in columns" if the sheet lists kids across the top.
+- **Report card**: name/group/batch, photo, four superpowers (presets or
+  custom), trait levels, the three text sections, and the badge. The live
+  preview is the exact 1131×1600 card.
+- **Sharing with parents**: *Download PNG* (best for WhatsApp), *Print / PDF*
+  (A4), or *Copy parent link* / *WhatsApp*. The link opens
+  `/kids-reports/view`. The whole report (with a smaller photo) is compressed
+  into the link's `#fragment`, so nothing is uploaded and the server never
+  sees it. Parents can save or print from that page.
+
+Traits and the report period apply to every kid (**Traits** and **Report
+period** in the top bar). Data is stored in this browser's localStorage. Use
+**Backup** to download a JSON file and **Restore** to load it on another
+device.

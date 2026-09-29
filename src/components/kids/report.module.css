@@ -1,0 +1,402 @@
+/* "My Jiu-Jitsu Journey" report card. Laid out on a fixed 1131×1600 canvas
+   (the template's own size) so it renders identically on every screen, in
+   PNG exports and in print; the viewer scales it to fit. */
+
+.page {
+  --cream: #fdf6e6;
+  --teal: #2b938f;
+  --teal-dark: #1d5e5a;
+  --ink: #1f3b3a;
+  --grey: #6d6a66;
+  --orange: #f57b2a;
+  --brush-gradient: linear-gradient(95deg, #a24de6 0%, #c85bc2 45%, #ef7f5a 80%, #f79a44 100%);
+  position: relative;
+  width: 1131px;
+  height: 1600px;
+  overflow: hidden;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--kr-body), "Quicksand", system-ui, sans-serif;
+  line-height: 1.32;
+}
+.page p {
+  margin: 0;
+}
+.emoji {
+  font-family: var(--kr-emoji), "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ── HEADER ── */
+.logo {
+  position: absolute;
+  left: 52px;
+  top: 18px;
+  width: 190px;
+}
+.logoIcon {
+  width: 184px;
+  height: 172px;
+  margin-left: 2px;
+  background: url(/flamingo-icon-teal.png) center / contain no-repeat;
+}
+.logoWord {
+  width: 164px;
+  height: 72px;
+  margin-top: 4px;
+  margin-left: 8px;
+  background: url(/flamingo-wordmark-teal.png) center / contain no-repeat;
+}
+
+.brush {
+  font-family: var(--kr-brush), "Permanent Marker", cursive;
+  background: var(--brush-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  transform: skewX(-8deg);
+}
+.title {
+  position: absolute;
+  left: 285px;
+  top: 82px;
+  width: 345px;
+  white-space: nowrap;
+  text-align: center;
+}
+.title .brush {
+  font-size: 44px;
+  line-height: 1.05;
+}
+.period {
+  margin-top: 14px;
+  font-family: var(--kr-display), "Luckiest Guy", sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.04em;
+  color: var(--teal-dark);
+}
+
+.who {
+  position: absolute;
+  right: 248px;
+  top: 104px;
+  width: 245px;
+  text-align: right;
+}
+.group {
+  font-family: var(--kr-round), "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 27px;
+  line-height: 1;
+  color: var(--teal-dark);
+  margin-right: 2px;
+}
+.name {
+  width: 100%;
+  padding-right: 6px;
+  text-align: right;
+  line-height: 1.02;
+  overflow: hidden;
+}
+.batch {
+  font-family: var(--kr-round), "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--teal-dark);
+  letter-spacing: 0.01em;
+}
+
+.photoWrap {
+  position: absolute;
+  left: 890px;
+  top: 36px;
+  width: 196px;
+  height: 232px;
+}
+.photoCircle {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 188px;
+  height: 188px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.photo,
+.photoInitial {
+  position: absolute;
+  left: 12px;
+  top: 30px;
+  width: 164px;
+  height: 164px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.photoInitial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--kr-display), "Luckiest Guy", sans-serif;
+  font-size: 90px;
+  color: #fff;
+  background: color-mix(in srgb, #fff 18%, var(--orange));
+}
+
+/* ── CARDS & TABS ── */
+.card {
+  position: absolute;
+  background: #fff;
+  border: 2px solid;
+  border-radius: 34px;
+}
+.tab {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-family: var(--kr-display), "Luckiest Guy", sans-serif;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.tabBig {
+  top: -2px;
+  left: -2px;
+  height: 58px;
+  padding: 6px 18px 0 22px;
+  font-size: 25px;
+  border-radius: 12px 6px 6px 6px;
+}
+.tabSmall {
+  height: 58px;
+  padding: 6px 20px 0;
+  font-size: 18px;
+  font-style: italic;
+  border-radius: 6px;
+  transform-origin: left;
+}
+.tabBig .emoji {
+  font-size: 29px;
+  margin-top: -6px;
+}
+.tabYellow {
+  background: #fde89e;
+}
+.tabMint {
+  background: #d9f3e3;
+}
+.tabBlue {
+  background: #d8ecf8;
+}
+.tabLilac {
+  background: #e6ddf6;
+}
+
+.body {
+  position: absolute;
+  inset: 26px 28px 22px;
+  overflow: hidden;
+  color: var(--grey);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+/* ── SUPERPOWERS ── */
+.powers {
+  left: 58px;
+  top: 282px;
+  width: 626px;
+  height: 441px;
+  border-color: #faefc6;
+  border-radius: 12px 48px 48px 48px;
+}
+.powerGrid {
+  position: absolute;
+  inset: 78px 16px 22px 18px;
+  display: grid;
+  grid-template-columns: 286px 1fr;
+  grid-template-rows: 1fr 1fr;
+  column-gap: 4px;
+  row-gap: 8px;
+}
+.power {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.powerHead {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--kr-round), "Fredoka", sans-serif;
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 1.1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.powerHead .emoji {
+  font-size: 30px;
+  width: 44px;
+  flex: none;
+}
+.powerText {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding-left: 46px;
+  margin-top: 6px;
+  color: var(--grey);
+  line-height: 1.3;
+}
+
+/* ── TRAITS ── */
+.traits {
+  left: 716px;
+  top: 282px;
+  width: 367px;
+  height: 494px;
+  border-color: #dff3e6;
+  border-radius: 12px 40px 48px 48px;
+}
+.traitRows {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 72px;
+  bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.traitRow {
+  display: grid;
+  grid-template-columns: 1fr 60px 60px 60px;
+  align-items: center;
+}
+.traitName {
+  padding-left: 2px;
+  font-family: var(--kr-round), "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.2;
+  color: #16302f;
+}
+.traitIcon {
+  justify-self: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+}
+.traitIcon.on {
+  background: var(--orange);
+  box-shadow: inset 0 0 0 2px #e5621a;
+}
+.legend {
+  position: absolute;
+  left: 4px;
+  right: 6px;
+  bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--grey);
+  font-size: 21px;
+  font-weight: 500;
+}
+
+/* ── LOWER SECTIONS ── */
+.journey {
+  left: 48px;
+  top: 795px;
+  width: 1028px;
+  height: 202px;
+  border-color: #e0eef7;
+}
+.journeyTab {
+  left: 48px;
+  top: 759px;
+  width: 636px;
+  border-radius: 12px 12px 4px 4px;
+}
+.journey .body {
+  inset: 30px 26px 16px 30px;
+}
+
+.next {
+  left: 48px;
+  top: 1062px;
+  width: 636px;
+  height: 240px;
+  border-color: #ebe5f7;
+}
+.nextTab {
+  left: 48px;
+  top: 1022px;
+  width: 636px;
+  border-radius: 12px 12px 4px 4px;
+}
+.next .body {
+  inset: 38px 22px 16px 30px;
+}
+
+.badgeBox {
+  position: absolute;
+  left: 708px;
+  top: 1062px;
+  width: 375px;
+  height: 240px;
+  background: #93aeb0;
+  border-radius: 0 0 30px 30px;
+  overflow: hidden;
+}
+.badgeTab {
+  left: 708px;
+  top: 1022px;
+  width: 375px;
+  border-radius: 12px 12px 4px 4px;
+}
+.badgeSvg {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 375px;
+  height: 222px;
+}
+.note {
+  left: 48px;
+  top: 1330px;
+  width: 1035px;
+  height: 224px;
+  border-color: #dcf1e4;
+  border-radius: 12px 48px 34px 34px;
+}
+.noteTab {
+  left: 48px;
+  top: 1327px;
+  width: 438px;
+  border-radius: 12px 12px 12px 12px;
+}
+.note .body {
+  inset: 72px 30px 16px 30px;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  text-align: center;
+  font-family: var(--kr-body), "Quicksand", sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: #111;
+}
