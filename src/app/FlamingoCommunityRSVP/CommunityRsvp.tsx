@@ -210,7 +210,7 @@ export default function CommunityRsvp() {
               {whatsapp === "sent" && (
                 <div className={s.muted}>We&apos;ve sent a confirmation to your WhatsApp.</div>
               )}
-              <div className={s.muted}>See you Oct 11, doors open at 9:45am. Know someone else who&apos;d love this? The workshop is free — bring them along.</div>
+              <div className={s.muted}>See you Oct 11, door opens at 9:45am. Know someone else who&apos;d love this? The workshop is free — bring them along.</div>
               <a href="#invite" className={s.primaryBtn}>Invite a friend to the workshop</a>
             </div>
           )}
