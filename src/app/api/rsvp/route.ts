@@ -6,6 +6,7 @@ import {
   validateRsvp,
   type RsvpInput,
 } from "@/lib/rsvp";
+import { CHOICE_TYPES, fetchFormQuestions, matchOptions, type FormQuestion } from "@/lib/googleForm";
 
 // Responses land in the Google Form (and the Sheet linked to it). Defaults are
 // the form the RSVP design was wired to; override per deployment via env.
@@ -74,12 +75,16 @@ function parseBody(body: unknown): RsvpInput | null {
   };
 }
 
-async function postToGoogleForm(r: RsvpInput, sessionValues: string[]): Promise<number> {
+async function postToGoogleForm(r: RsvpInput, sessionValues: string[], otherText = ""): Promise<number> {
   const form = new URLSearchParams();
   form.append(FORM_ENTRIES.name, r.name.trim());
   form.append(FORM_ENTRIES.phone, r.phone.trim());
   form.append(FORM_ENTRIES.guests, String(r.guests));
   for (const value of sessionValues) form.append(FORM_ENTRIES.sessions, value);
+  if (otherText) {
+    form.append(FORM_ENTRIES.sessions, "__other_option__");
+    form.append(`${FORM_ENTRIES.sessions}.other_option_response`, otherText);
+  }
   const res = await fetch(FORM_URL, {
     method: "POST",
     body: form,
@@ -89,7 +94,7 @@ async function postToGoogleForm(r: RsvpInput, sessionValues: string[]): Promise<
   });
   if (!res.ok) {
     const where = res.headers.get("location") ?? "";
-    const sent = `name="${r.name}" phone="${maskPhone(r.phone)}" guests=${r.guests} sessions=${JSON.stringify(sessionValues)}`;
+    const sent = `name="${r.name}" phone="${maskPhone(r.phone)}" guests=${r.guests} sessions=${JSON.stringify(sessionValues)}${otherText ? ` other="${otherText}"` : ""}`;
     const reason = where || readableGoogleError(await res.text());
     console.error(`RSVP: Google Form responded ${res.status} for ${sent} — ${reason}`);
     if (where.includes("accounts.google.com")) {
@@ -99,10 +104,36 @@ async function postToGoogleForm(r: RsvpInput, sessionValues: string[]): Promise<
   return res.status;
 }
 
+// Sends the sessions as the form's own option texts. One checkbox value that
+// isn't an exact option makes Google reject the whole response.
+async function postChoiceAnswer(r: RsvpInput, sessionTitles: string[], q: FormQuestion): Promise<number> {
+  let { values, other } = matchOptions(sessionTitles, q);
+  if (q.type !== 4 && values.length > 1) values = values.slice(0, 1); // single-choice question
+  if (q.type !== 4 && values.length) other = [];
+  if (other.length) {
+    console.warn(
+      `RSVP: no option in the form's sessions question matches ${JSON.stringify(other)}` +
+        (q.hasOther ? " — sent as “Other”" : " — add it to the form (or enable “Other”)") +
+        `. Form options: ${JSON.stringify(q.options)}`,
+    );
+  }
+  // Even if nothing matched, this still saves name, number and guests.
+  return postToGoogleForm(r, values, q.hasOther ? other.join(", ") : "");
+}
+
 async function saveToGoogleForm(r: RsvpInput, sessionTitles: string[]): Promise<boolean> {
   try {
-    // The sessions question may be checkboxes (one value per box) or a text
-    // field (Google rejects repeated values there), so fall back to one line.
+    const q = (await fetchFormQuestions(FORM_URL))?.get(FORM_ENTRIES.sessions);
+    if (q && CHOICE_TYPES.has(q.type)) {
+      const status = await postChoiceAnswer(r, sessionTitles, q);
+      if (status !== 400) return status === 200;
+      // Options are cached for a few minutes; the form may have just changed.
+      const fresh = (await fetchFormQuestions(FORM_URL, { fresh: true }))?.get(FORM_ENTRIES.sessions);
+      return !!fresh && CHOICE_TYPES.has(fresh.type) && (await postChoiceAnswer(r, sessionTitles, fresh)) === 200;
+    }
+
+    // Text question (or the form's details couldn't be read): one value per
+    // session, then one line if Google rejects repeated values.
     const status = await postToGoogleForm(r, sessionTitles);
     if (status === 200) return true;
     if (status === 400 && sessionTitles.length > 1) {
