@@ -23,6 +23,7 @@ function looksLikeReport(r: unknown): r is ReportCard {
  */
 export async function POST(request: Request) {
   if (!storeConfigured()) {
+    console.error("[share] no storage: connect a Vercel Blob store (BLOB_READ_WRITE_TOKEN or BLOB_STORE_ID) and redeploy");
     return Response.json({ error: "not-configured" }, { status: 503 });
   }
   const raw = await request.text();
