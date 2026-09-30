@@ -31,6 +31,8 @@
 
 .primaryBtn{display:inline-flex;align-items:center;gap:10px;background:#2E2724;color:#FBF6F3 !important;font-family:inherit;font-weight:700;font-size:15px;padding:14px 28px;border:none;border-radius:12px;cursor:pointer}
 .primaryBtn:disabled{opacity:.6;cursor:progress}
+.secondaryBtn{display:inline-flex;align-items:center;gap:10px;background:#FFFFFF;color:#2E2724 !important;border:1.5px solid #2E2724;font-family:inherit;font-weight:700;font-size:15px;padding:12.5px 22px;border-radius:12px}
+.thanksActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 
 .thanks{background:#FFF0F8;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .thanksTitle{font-family:var(--font-fraunces),serif;font-weight:600;font-size:20px}

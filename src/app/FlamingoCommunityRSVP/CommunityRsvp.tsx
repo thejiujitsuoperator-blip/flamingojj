@@ -10,6 +10,7 @@ import {
   validateRsvp,
   type RsvpErrors,
 } from "@/lib/rsvp";
+import { googleCalendarUrl } from "@/lib/calendar";
 import s from "./rsvp.module.css";
 
 const INVITE_BASE =
@@ -31,6 +32,25 @@ function useRsvpUrl(): string {
 // nothing, so the button stays disabled.
 function useHydrated(): boolean {
   return useSyncExternalStore(noSubscribe, () => true, () => false);
+}
+
+// iPhones, iPads and Macs open an .ics file straight into Apple Calendar;
+// everyone else (Android, Windows) gets Google Calendar.
+function useIsApple(): boolean {
+  return useSyncExternalStore(
+    noSubscribe,
+    () => /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent),
+    () => false,
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18M12 14v4M10 16h4" />
+    </svg>
+  );
 }
 
 type WhatsAppStatus = "sent" | "failed" | "not_configured";
@@ -99,6 +119,9 @@ export default function CommunityRsvp() {
 
   const rsvpUrl = useRsvpUrl();
   const hydrated = useHydrated();
+  const isApple = useIsApple();
+  const icsUrl = `/api/rsvp/calendar?s=${selected.join(",")}`;
+  const calendarUrl = isApple ? icsUrl : googleCalendarUrl(selected, rsvpUrl);
   const invite = rsvpUrl ? `${INVITE_BASE}\n\nRSVP here (takes 30 seconds): ${rsvpUrl}` : INVITE_BASE;
   const previewMessage = note ? `${note}\n\n${invite}` : invite;
   const whatsappShareLink = `https://wa.me/?text=${encodeURIComponent(previewMessage)}`;
@@ -208,7 +231,6 @@ export default function CommunityRsvp() {
                   {!hydrated ? "Loading…" : submitting ? "Sending…" : "Submit RSVP"}
                 </button>
                 {submitError && <div role="alert" className={s.error}>{submitError}</div>}
-                <div className={s.hint}>We&apos;ll send your confirmation on WhatsApp and only use your number to reach you about Community Day.</div>
               </div>
             </form>
           ) : (
@@ -219,7 +241,18 @@ export default function CommunityRsvp() {
                 <div className={s.muted}>We&apos;ve sent a confirmation to your WhatsApp.</div>
               )}
               <div className={s.muted}>See you Oct 11, door opens at 9:45am. Know someone else who&apos;d love this? The workshop is free — bring them along.</div>
-              <a href="#invite" className={s.primaryBtn}>Invite a friend to the workshop</a>
+              <div className={s.thanksActions}>
+                <a href={calendarUrl} {...(isApple ? {} : { target: "_blank", rel: "noopener noreferrer" })} className={s.primaryBtn}>
+                  <CalendarIcon />
+                  Add to my calendar
+                </a>
+                <a href="#invite" className={s.secondaryBtn}>Invite a friend to the workshop</a>
+              </div>
+              {!isApple && (
+                <div className={s.hint}>
+                  Apple or Outlook calendar? <a href={icsUrl} className={s.strongLink}>Download the event file</a>
+                </div>
+              )}
             </div>
           )}
         </div>
